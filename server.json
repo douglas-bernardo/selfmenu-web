@@ -44,11 +44,11 @@
   "product": [
     {
       "name": "Bolo de chocolate",
-      "description": "Bolo de chocolate editado",
+      "description": "Bolo de chocolate editado 2",
       "category_id": "6",
       "price": "8,90",
-      "available": true,
       "url_photo": "http://localhost:3000/images/chocolate_cake.jpg",
+      "available": true,
       "id": 5
     },
     {
@@ -68,6 +68,17 @@
       "url_photo": "http://localhost:3000/images/spaghetti.jpg",
       "available": false,
       "id": 7
+    },
+    {
+      "name": "Lagosta",
+      "description": "Lagosta especial",
+      "category_id": "7",
+      "price": "100,00",
+      "rate": "5",
+      "url_photo": "http://localhost:3000/images/lagosta.jpg",
+      "img": {},
+      "available": true,
+      "id": 8
     }
   ],
   "tables": [
@@ -310,27 +321,30 @@
   ],
   "waiters": [
     {
-      "name": "Jackson Douglas B. Feijão",
+      "name": "Jackson Douglas B. Feijão Edited",
       "login": "jackson",
-      "phone_number": "(85) 9 9988-9996",
+      "phone_number": "(85) 99988-9996",
       "url_photo": "http://localhost:3000/images/me.jpg",
-      "image": {},
       "active": true,
       "id": 1
     },
     {
-      "id": 2,
       "name": "Francisco Apoliano",
       "login": "junior",
-      "phone_number": "(85) 9 9988-9996",
-      "active": true
+      "phone_number": "(85) 9998-8999",
+      "url_photo": "http://localhost:3000/images/man_example2.jpg",
+      "image": {},
+      "active": true,
+      "id": 2
     },
     {
-      "id": 3,
       "name": "José Aurélio",
       "login": "jose",
       "phone_number": "(85) 9 9988-9996",
-      "active": true
+      "url_photo": "http://localhost:3000/images/man_example.jpeg",
+      "image": {},
+      "active": true,
+      "id": 3
     },
     {
       "name": "Débora Távora",
@@ -347,6 +361,14 @@
       "url_photo": "http://localhost:3000/images/man_example2.jpg",
       "active": true,
       "id": 5
+    },
+    {
+      "name": "Déborah Melo",
+      "login": "deborah",
+      "phone_number": "(85) 98569-8969",
+      "url_photo": "http://localhost:3000/images/debora.jpeg",
+      "active": false,
+      "id": 6
     }
   ]
 }
