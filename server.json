@@ -39,6 +39,11 @@
       "description": "Massas",
       "status": true,
       "id": 8
+    },
+    {
+      "description": "Bebidas",
+      "status": true,
+      "id": 9
     }
   ],
   "product": [
