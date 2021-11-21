@@ -4,8 +4,8 @@ import { TiArrowLeftThick } from 'react-icons/ti';
 
 import { Link, useParams } from 'react-router-dom';
 import { Container, Content } from '../../components/Container';
-import Sidebar from '../../components/Sidebar';
-import Header from '../../components/Header';
+import { Sidebar } from '../../components/Sidebar';
+import { Header } from '../../components/Header';
 
 import {
   Main,
@@ -45,7 +45,7 @@ interface TableParams {
   id: string;
 }
 
-const TableDetails: React.FC = () => {
+export const TableDetails: React.FC = () => {
   const params = useParams<TableParams>();
 
   const [table, setTable] = useState<Table | null>(null);
@@ -65,7 +65,7 @@ const TableDetails: React.FC = () => {
             items: tableData.order_table.items.map(item => {
               return {
                 ...item,
-                total_item: item.quantity * item.price,
+                total_item: item.quantity * Number(item.price),
               };
             }),
           },
@@ -161,5 +161,3 @@ const TableDetails: React.FC = () => {
     </Container>
   );
 };
-
-export default TableDetails;

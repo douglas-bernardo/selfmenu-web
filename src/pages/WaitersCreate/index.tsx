@@ -9,9 +9,9 @@ import { TiArrowLeftThick } from 'react-icons/ti';
 import { Container, Content } from '../../components/Container';
 import { Main, WaiterCreateContainer, Form, ImageContainer } from './styles';
 
-import getValidationErros from '../../utils/getValidationErros';
-import Sidebar from '../../components/Sidebar';
-import Header from '../../components/Header';
+import { getValidationErrors } from '../../utils/getValidationErrors';
+import { Sidebar } from '../../components/Sidebar';
+import { Header } from '../../components/Header';
 import Input from '../../components/Input';
 import { api } from '../../services/api';
 
@@ -65,7 +65,7 @@ const WaitersCreate: React.FC = () => {
         history.push('/settings/waiters');
       } catch (err) {
         if (err instanceof Yup.ValidationError) {
-          const errors = getValidationErros(err);
+          const errors = getValidationErrors(err);
           formRef.current?.setErrors(errors);
         }
       }

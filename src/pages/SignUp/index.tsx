@@ -4,13 +4,13 @@ import { FormHandles } from '@unform/core';
 import { Form } from '@unform/web';
 import * as Yup from 'yup';
 import { Link, useHistory } from 'react-router-dom';
-import { apiAuth } from '../../services/api';
+import { api } from '../../services/api';
 
 import { useToast } from '../../hooks/toast';
 
-import getValidationErros from '../../utils/getValidationErros';
+import { getValidationErrors } from '../../utils/getValidationErrors';
 
-import logoimg from '../../assets/logo-self-menu.svg';
+import selfmenuLogo from '../../assets/selfmenu-logo.svg';
 
 import Input from '../../components/Input';
 import Button from '../../components/Button';
@@ -18,12 +18,12 @@ import Button from '../../components/Button';
 import { Container, Content, AnimationContainer, Background } from './styles';
 
 interface SignUpFormData {
-  name: string;
+  profile_name: string;
   email: string;
   password: string;
 }
 
-const SignUp: React.FC = () => {
+export const SignUp: React.FC = () => {
   const formRef = useRef<FormHandles>(null);
   const { addToast } = useToast();
   const history = useHistory();
@@ -34,16 +34,23 @@ const SignUp: React.FC = () => {
         formRef.current?.setErrors({});
 
         const schema = Yup.object().shape({
-          name: Yup.string().required('Nome obrigatório'),
           email: Yup.string()
             .required('E-mail obrigatório')
             .email('Digite um e-mail válido'),
+          email_confirmation: Yup.string()
+            .when('email', {
+              is: val => !!val.length,
+              then: Yup.string().required('Campo obrigatório'),
+              otherwise: Yup.string(),
+            })
+            .oneOf([Yup.ref('email'), null], 'Confirmação incorreta'),
+          profile_name: Yup.string().required('Nome de perfil obrigatório'),
           password: Yup.string().min(6, 'No mínimo 6 digitos'),
         });
 
         await schema.validate(data, { abortEarly: false });
 
-        await apiAuth.post('/users', data);
+        await api.post('/account', data);
 
         history.push('/');
 
@@ -54,7 +61,7 @@ const SignUp: React.FC = () => {
         });
       } catch (err) {
         if (err instanceof Yup.ValidationError) {
-          const errors = getValidationErros(err);
+          const errors = getValidationErrors(err);
           formRef.current?.setErrors(errors);
           return;
         }
@@ -74,13 +81,22 @@ const SignUp: React.FC = () => {
       <Background />
       <Content>
         <AnimationContainer>
-          <img src={logoimg} alt="GoBarber" />
+          <img className="logo" src={selfmenuLogo} alt="SelfMenu" />
 
           <Form ref={formRef} onSubmit={handleSubmit}>
             <h1>Faça seu cadastro</h1>
 
-            <Input name="name" icon={FiUser} placeholder="Nome" />
-            <Input name="email" icon={FiMail} placeholder="E-mail" />
+            <Input name="email" icon={FiMail} placeholder="Insira seu email" />
+            <Input
+              name="email_confirmation"
+              icon={FiMail}
+              placeholder="Insira o e-mail novamente"
+            />
+            <Input
+              name="profile_name"
+              icon={FiUser}
+              placeholder="Insira um nome de perfil"
+            />
 
             <Input
               name="password"
@@ -101,5 +117,3 @@ const SignUp: React.FC = () => {
     </Container>
   );
 };
-
-export default SignUp;

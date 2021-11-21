@@ -7,9 +7,9 @@ import { Link } from 'react-router-dom';
 
 import { useToast } from '../../hooks/toast';
 
-import getValidationErros from '../../utils/getValidationErros';
+import { getValidationErrors } from '../../utils/getValidationErrors';
 
-import logoimg from '../../assets/logo.svg';
+import selfmenuLogo from '../../assets/selfmenu-logo.svg';
 
 import Input from '../../components/Input';
 import Button from '../../components/Button';
@@ -22,7 +22,7 @@ interface ForgotPasswordFormData {
   password: string;
 }
 
-const ForgotPassword: React.FC = () => {
+export const ForgotPassword: React.FC = () => {
   const [loading, setLoading] = useState(false);
 
   const formRef = useRef<FormHandles>(null);
@@ -55,7 +55,7 @@ const ForgotPassword: React.FC = () => {
         });
       } catch (err) {
         if (err instanceof Yup.ValidationError) {
-          const errors = getValidationErros(err);
+          const errors = getValidationErrors(err);
           formRef.current?.setErrors(errors);
           return;
         }
@@ -75,7 +75,7 @@ const ForgotPassword: React.FC = () => {
     <Container>
       <Content>
         <AnimationContainer>
-          <img src={logoimg} alt="GoBarber" />
+          <img className="logo" src={selfmenuLogo} alt="GoBarber" />
 
           <Form ref={formRef} onSubmit={handleSubmit}>
             <h1>Recuperar senha</h1>
@@ -97,5 +97,3 @@ const ForgotPassword: React.FC = () => {
     </Container>
   );
 };
-
-export default ForgotPassword;

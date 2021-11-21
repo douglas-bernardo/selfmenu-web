@@ -7,7 +7,6 @@ export const Main = styled.div`
   height: 100%;
   overflow: auto;
   padding: 30px;
-
   color: #3c3c3c;
 `;
 
@@ -15,13 +14,16 @@ export const CategoryContent = styled.div`
   padding: 30px;
   background: #fff;
   border-radius: 10px;
+  min-height: 720px;
 `;
 
 export const CategoryContentHeader = styled.header`
   display: flex;
   justify-content: space-between;
 
-  button {
+  margin-bottom: 50px;
+
+  a {
     display: flex;
     height: 40px;
     width: 178px;
@@ -55,36 +57,76 @@ export const CategoryContentHeader = styled.header`
   }
 `;
 
-export const CategoriesTable = styled.table`
-  width: 100%;
-  margin-top: 33px;
-  border-collapse: collapse;
-  border-spacing: 0;
+export const ListCategoryContainer = styled.div`
+  display: grid;
+  grid-gap: 1rem;
 
-  & + tr {
-    margin-top: 20px;
+  @media (min-width: 600px) {
+    grid-template-columns: repeat(2, 1fr);
   }
 
-  th {
-    text-align: left;
-    height: 40px;
-    line-height: 40px;
+  @media (min-width: 900px) {
+    grid-template-columns: repeat(3, 1fr);
   }
 
-  tbody tr:hover {
-    background: #f5f5f5;
+  @media (min-width: 1600px) {
+    grid-gap: 1rem;
+    grid-template-columns: repeat(3, 1fr);
   }
 
-  td {
-    white-space: normal;
-    text-align: left;
-    height: 55px;
-    padding: 5px;
-    border-top: 1px solid #f0f0f0;
-    font-size: 14px;
+  @media (min-width: 1680px) {
+    grid-template-columns: repeat(5, 1fr);
+  }
+`;
+
+export const CategoryContainer = styled.div`
+  position: relative;
+  display: flex;
+  justify-content: start;
+  align-items: center;
+
+  padding: 10px;
+  max-width: 300px;
+  height: 90px;
+
+  background: transparent;
+  border: 1px solid #ccc;
+  box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+  border-radius: 5px;
+
+  transition-duration: 0.3s;
+
+  &:hover {
+    transform: scale(1.04);
   }
 
-  td.clientName {
-    width: 270px;
+  a {
+    width: 340px;
+    height: 150px;
+    text-decoration: none;
+
+    display: flex;
+    justify-content: start;
+    align-items: center;
+
+    color: #3c3c3c;
+  }
+
+  img {
+    width: 60px;
+    height: 60px;
+    object-fit: cover;
+    border-radius: 8px;
+    margin-right: 20px;
+  }
+
+  div.cardContent {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+
+    h3 {
+      margin-bottom: 8px;
+    }
   }
 `;

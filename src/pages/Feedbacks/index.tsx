@@ -3,8 +3,8 @@ import React, { useEffect, useState } from 'react';
 import { FiAward } from 'react-icons/fi';
 
 import { Container, Content } from '../../components/Container';
-import Sidebar from '../../components/Sidebar';
-import Header from '../../components/Header';
+import { Sidebar } from '../../components/Sidebar';
+import { Header } from '../../components/Header';
 
 import userDefaultImage from '../../assets/user.svg';
 
@@ -22,7 +22,7 @@ interface Feedback {
   description: string;
 }
 
-const Feedbacks: React.FC = () => {
+export const Feedbacks: React.FC = () => {
   const [feedbacks, setFeedbacks] = useState<Feedback[]>([]);
   const [isLoading, setIsLoading] = useState(true);
 
@@ -77,4 +77,3 @@ const Feedbacks: React.FC = () => {
     </Container>
   );
 };
-export default Feedbacks;

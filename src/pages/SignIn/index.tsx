@@ -8,9 +8,9 @@ import { Link, useHistory } from 'react-router-dom';
 import { useAuth } from '../../hooks/auth';
 import { useToast } from '../../hooks/toast';
 
-import getValidationErros from '../../utils/getValidationErros';
+import { getValidationErrors } from '../../utils/getValidationErrors';
 
-import logoimg from '../../assets/logo-self-menu.svg';
+import selfmenuLogo from '../../assets/selfmenu-logo.svg';
 
 import Input from '../../components/Input';
 import Button from '../../components/Button';
@@ -22,7 +22,7 @@ interface SingInFormData {
   password: string;
 }
 
-const SignIn: React.FC = () => {
+export const SignIn: React.FC = () => {
   const formRef = useRef<FormHandles>(null);
   const history = useHistory();
   const { signIn } = useAuth();
@@ -62,7 +62,7 @@ const SignIn: React.FC = () => {
         history.push('/dashboard');
       } catch (err) {
         if (err instanceof Yup.ValidationError) {
-          const errors = getValidationErros(err);
+          const errors = getValidationErrors(err);
           formRef.current?.setErrors(errors);
           return;
         }
@@ -81,7 +81,7 @@ const SignIn: React.FC = () => {
     <Container>
       <Content>
         <AnimationContainer>
-          <img src={logoimg} alt="selfmenuWeb" />
+          <img className="logo" src={selfmenuLogo} alt="selfmenuWeb" />
           <Form ref={formRef} onSubmit={handleSubmit}>
             <h1>Faça seu login</h1>
 
@@ -108,5 +108,3 @@ const SignIn: React.FC = () => {
     </Container>
   );
 };
-
-export default SignIn;

@@ -1,16 +1,12 @@
 import React, { useCallback } from 'react';
-import {
-  FaBell,
-  FaAngleDown,
-  FaUser,
-  FaInfoCircle,
-  FaPowerOff,
-} from 'react-icons/fa';
+import { FaBell, FaAngleDown, FaUser, FaPowerOff } from 'react-icons/fa';
 
+import { Link } from 'react-router-dom';
 import { OutSideClick } from '../../hooks/outSideClick';
-import userDefaultImage from '../../assets/user.svg';
 
-// import { useAuth } from '../../hooks/auth';
+import defaultAvatar from '../../assets/user.svg';
+
+import { useAuth } from '../../hooks/auth';
 
 import {
   Container,
@@ -19,7 +15,8 @@ import {
   DropdownMenuContent,
 } from './styles';
 
-const Header: React.FC = ({ children }) => {
+export const Header: React.FC = ({ children }) => {
+  const { account, signOut } = useAuth();
   const { visible, setVisible, ref } = OutSideClick(false);
 
   const handleClickButton = useCallback(() => {
@@ -34,23 +31,19 @@ const Header: React.FC = ({ children }) => {
 
         <DropdownMenu ref={ref}>
           <button type="button" onClick={handleClickButton}>
-            <img src={userDefaultImage} alt="User Logo" />
-            <span>Selfmenu</span>
+            <img src={account.avatar_url || defaultAvatar} alt="User Logo" />
+            <span>{account.profile_name}</span>
             <FaAngleDown />
 
             <DropdownMenuContent isVisible={visible}>
-              <a href="/">
+              <Link to="/account">
                 <FaUser className="drop" />
-                <span>Meu Perfil</span>
-              </a>
-              <a href="/">
-                <FaInfoCircle className="drop" />
-                <span>Meus dados</span>
-              </a>
-              <a href="/">
+                <span>Conta</span>
+              </Link>
+              <Link to="/" onClick={signOut}>
                 <FaPowerOff className="drop" />
                 <span>Sair</span>
-              </a>
+              </Link>
             </DropdownMenuContent>
           </button>
         </DropdownMenu>
@@ -58,5 +51,3 @@ const Header: React.FC = ({ children }) => {
     </Container>
   );
 };
-
-export default Header;

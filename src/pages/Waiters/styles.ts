@@ -65,8 +65,9 @@ export const WaitersContent = styled.div`
     border-spacing: 0;
 
     img.waiterImage {
-      width: 40px;
-      height: 40px;
+      width: 50px;
+      height: 50px;
+      object-fit: cover;
       border-radius: 50%;
     }
 

@@ -1,16 +1,21 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
 import React, { createContext, useCallback, useContext, useState } from 'react';
-import jwt from 'jsonwebtoken';
-import { apiAuth } from '../services/api';
+import { api } from '../services/api';
 
-interface User {
+interface IAccount {
   id: string;
   email: string;
+  profile_name: string;
+  avatar_url: string;
+  plan: {
+    id: number;
+    name: string;
+    description: string;
+  };
 }
 
 interface AuthState {
   token: string;
-  user: User;
+  account: IAccount;
 }
 
 interface SignInCredentials {
@@ -19,11 +24,11 @@ interface SignInCredentials {
 }
 
 interface AuthContextData {
-  user: User;
+  account: IAccount;
   token: string;
   signIn(credentials: SignInCredentials): Promise<void>;
   signOut(): void;
-  updateUser(user: User): void;
+  updateAccount(account: IAccount): void;
 }
 
 export const AuthContext = createContext<AuthContextData>(
@@ -33,51 +38,45 @@ export const AuthContext = createContext<AuthContextData>(
 export const AuthProvider: React.FC = ({ children }) => {
   const [data, setData] = useState<AuthState>(() => {
     const token = localStorage.getItem('@selfmenu:token');
-    const user = localStorage.getItem('@selfmenu:user');
+    const account = localStorage.getItem('@selfmenu:account');
 
-    if (token && user) {
-      apiAuth.defaults.headers.authorization = `Bearer ${token}`;
-      return { token, user: JSON.parse(user) };
+    if (token && account) {
+      api.defaults.headers.authorization = `Bearer ${token}`;
+      return { token, account: JSON.parse(account) };
     }
 
     return {} as AuthState;
   });
 
   const signIn = useCallback(async ({ email, password }) => {
-    const response = await apiAuth.post('/signin', {
+    const response = await api.post('/sessions', {
       email,
       password,
     });
 
-    const { accessToken } = response.data;
-    const decoded: any = jwt.decode(accessToken);
-    const user = {
-      id: decoded.sub,
-      email: decoded.email,
-    };
+    const { token, account } = response.data;
 
-    const token = accessToken;
     localStorage.setItem('@selfmenu:token', token);
-    localStorage.setItem('@selfmenu:user', JSON.stringify(user));
+    localStorage.setItem('@selfmenu:account', JSON.stringify(account));
 
-    apiAuth.defaults.headers.authorization = `Bearer ${token}`;
+    api.defaults.headers.authorization = `Bearer ${token}`;
 
-    setData({ token, user });
+    setData({ token, account });
   }, []);
 
   const signOut = useCallback(() => {
     localStorage.removeItem('@selfmenu:token');
-    localStorage.removeItem('@selfmenu:user');
+    localStorage.removeItem('@selfmenu:account');
 
     setData({} as AuthState);
   }, []);
 
-  const updateUser = useCallback(
-    (user: User) => {
-      localStorage.setItem('@selfmenu:user', JSON.stringify(user));
+  const updateAccount = useCallback(
+    (account: IAccount) => {
+      localStorage.setItem('@selfmenu:account', JSON.stringify(account));
       setData({
         token: data.token,
-        user,
+        account,
       });
     },
     [setData, data.token],
@@ -86,11 +85,11 @@ export const AuthProvider: React.FC = ({ children }) => {
   return (
     <AuthContext.Provider
       value={{
-        user: data.user,
+        account: data.account,
         token: data.token,
         signIn,
         signOut,
-        updateUser,
+        updateAccount,
       }}
     >
       {children}

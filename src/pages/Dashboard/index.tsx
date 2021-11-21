@@ -1,12 +1,12 @@
 import React from 'react';
 
 import { Container, Content } from '../../components/Container';
-import Sidebar from '../../components/Sidebar';
-import Header from '../../components/Header';
+import { Sidebar } from '../../components/Sidebar';
+import { Header } from '../../components/Header';
 
 import { Main } from './styles';
 
-const Dashboard: React.FC = () => {
+export const Dashboard: React.FC = () => {
   return (
     <Container>
       <Sidebar />
@@ -19,5 +19,3 @@ const Dashboard: React.FC = () => {
     </Container>
   );
 };
-
-export default Dashboard;

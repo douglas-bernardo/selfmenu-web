@@ -1,12 +1,13 @@
 import React from 'react';
 import { NavLink } from 'react-router-dom';
 import { FaChartLine, FaComments, FaSignOutAlt } from 'react-icons/fa';
+import { IoFastFood } from 'react-icons/io5';
 import { GiTable } from 'react-icons/gi';
 import { BiFoodMenu } from 'react-icons/bi';
 import { FiSettings } from 'react-icons/fi';
 import { IoTicketOutline } from 'react-icons/io5';
 
-import logoimg from '../../assets/logo-self-menu.svg';
+import selfmenuLogo from '../../assets/selfmenu-logo.svg';
 
 import { Aside } from './styles';
 
@@ -20,18 +21,19 @@ interface Page {
 
 const pages: Array<Page> = [
   { page: '/dashboard', label: 'Dashboard', icon: <FaChartLine /> },
+  { page: '/orders', label: 'Pedidos', icon: <IoFastFood /> },
   { page: '/categories', label: 'Categorias', icon: <IoTicketOutline /> },
-  { page: '/menu', label: 'Cardápio', icon: <BiFoodMenu /> },
+  { page: '/products', label: 'Produtos', icon: <BiFoodMenu /> },
   { page: '/tables', label: 'Mesas', icon: <GiTable /> },
   { page: '/feedbacks', label: 'Feedbacks', icon: <FaComments /> },
   { page: '/settings', label: 'Configurações', icon: <FiSettings /> },
 ];
 
-const Sidebar: React.FC = () => {
+export const Sidebar: React.FC = () => {
   const { signOut } = useAuth();
   return (
     <Aside>
-      <img src={logoimg} className="logo" alt="logo" />
+      <img src={selfmenuLogo} className="logo" alt="logo" />
       <ul>
         {pages.map(({ label, page, icon }) => (
           <li key={page}>
@@ -49,5 +51,3 @@ const Sidebar: React.FC = () => {
     </Aside>
   );
 };
-
-export default Sidebar;

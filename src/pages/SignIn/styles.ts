@@ -39,13 +39,18 @@ export const AnimationContainer = styled.div`
 
   animation: ${appearFromLeft} 1s;
 
+  img.logo {
+    width: 300px;
+    height: 300px;
+  }
+
   h1 {
     margin-top: 24px;
     color: #182390;
   }
 
   form {
-    margin: 80px 0;
+    margin: 50px 0;
     width: 340px;
     text-align: center;
 

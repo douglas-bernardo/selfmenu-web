@@ -1,7 +1,7 @@
 import styled, { keyframes } from 'styled-components';
 import { shade } from 'polished';
 
-import signInBackgroundImg from '../../assets/beachpark.png';
+import signInBackgroundImg from '../../assets/bg-self-menu.png';
 
 export const Container = styled.div`
   height: 100vh;
@@ -39,13 +39,19 @@ export const AnimationContainer = styled.div`
 
   animation: ${appearFromLeft} 1s;
 
+  img.logo {
+    width: 300px;
+    height: 300px;
+  }
+
   form {
-    margin: 80px 0;
+    margin: 50px 0;
     width: 340px;
     text-align: center;
 
     h1 {
       margin-bottom: 24px;
+      color: #182390;
     }
 
     a {
@@ -62,7 +68,7 @@ export const AnimationContainer = styled.div`
   }
 
   > a {
-    color: #ff9000;
+    color: #ff365f;
     display: block;
     margin-top: 24px;
     text-decoration: none;
@@ -72,7 +78,7 @@ export const AnimationContainer = styled.div`
     align-items: center;
 
     &:hover {
-      color: ${shade(0.2, '#ff9000')};
+      color: ${shade(0.2, '#ff365f')};
     }
 
     svg {

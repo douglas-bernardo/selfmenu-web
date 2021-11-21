@@ -12,7 +12,7 @@ interface Props extends SelectProps<OptionTypeBase> {
   name: string;
 }
 
-const Select: React.FC<Props> = ({ name, ...rest }) => {
+export const Select: React.FC<Props> = ({ name, ...rest }) => {
   const selectRef = useRef(null);
 
   const [isFocused, setIsFocused] = useState(false);
@@ -67,5 +67,3 @@ const Select: React.FC<Props> = ({ name, ...rest }) => {
     </Container>
   );
 };
-
-export default Select;

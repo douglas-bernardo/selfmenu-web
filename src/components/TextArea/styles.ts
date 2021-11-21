@@ -9,7 +9,7 @@ interface ContainerProps {
 export const Container = styled.div<ContainerProps>`
   background: #fff;
   border-radius: 5px;
-  padding: 15px;
+  padding: 10px;
   width: 100%;
 
   border: 3px solid #e8ebf2;
@@ -33,7 +33,7 @@ export const Container = styled.div<ContainerProps>`
 
   textarea {
     flex: 1;
-    padding: 10px;
+    padding: 5px;
     line-height: 1.5;
     background: transparent;
     border: 0;

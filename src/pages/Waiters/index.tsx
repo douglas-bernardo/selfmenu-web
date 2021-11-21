@@ -5,25 +5,36 @@ import { FiEdit } from 'react-icons/fi';
 import { Link } from 'react-router-dom';
 import { Container, Content } from '../../components/Container';
 
-import Sidebar from '../../components/Sidebar';
-import Header from '../../components/Header';
+import { Sidebar } from '../../components/Sidebar';
+import { Header } from '../../components/Header';
 
 import waiterImage from '../../assets/user.svg';
 
-import { Main, WaitersContent } from './styles';
 import Loading from '../../components/Loading';
+import { Main, WaitersContent } from './styles';
 import { api } from '../../services/api';
+import { BreadCrumb } from '../../components/BreadCrumb';
+import { BreadCrumbItem } from '../../components/BreadCrumbItem';
 
-interface Waiter {
-  id: number;
+interface IEstablishment {
+  id: string;
   name: string;
-  login: string;
-  phone_number: string;
-  url_photo: string;
-  active: boolean;
 }
 
-const Waiters: React.FC = () => {
+interface Waiter {
+  id: string;
+  cpf: number;
+  cpf_formatted: string;
+  name: string;
+  username: string;
+  password: string;
+  active: boolean;
+  avatar: string;
+  avatar_url: string;
+  establishment: IEstablishment;
+}
+
+export const Waiters: React.FC = () => {
   const [waiters, setWaiters] = useState<Waiter[]>([]);
   const [isLoading, setIsLoading] = useState(true);
 
@@ -44,12 +55,15 @@ const Waiters: React.FC = () => {
       <Sidebar />
       <Content>
         <Header>
-          <h1 className="pageTitle">Configurações</h1>
+          <BreadCrumb>
+            <BreadCrumbItem link="/settings" label="Configurações" />
+            <BreadCrumbItem label="Garçons" />
+          </BreadCrumb>
         </Header>
         <Main>
           <WaitersContent>
             <header>
-              <Link to="/settings/waiters/create">Novo</Link>
+              <Link to="/settings/waiters/new">Novo</Link>
               <input
                 type="text"
                 className="search-bar"
@@ -59,12 +73,12 @@ const Waiters: React.FC = () => {
             <table>
               <thead>
                 <tr>
-                  <th className="centered">FOTO</th>
-                  <th>NOME</th>
-                  <th>LOGIN</th>
-                  <th className="centered">TELEFONE</th>
-                  <th className="centered">STATUS</th>
-                  <th className="centered">AÇÕES</th>
+                  <th className="centered">Foto</th>
+                  <th>Nome</th>
+                  <th>Usuário</th>
+                  <th className="centered">Estabelecimento</th>
+                  <th className="centered">Situação</th>
+                  <th className="centered">Ações</th>
                 </tr>
               </thead>
               <tbody>
@@ -74,20 +88,27 @@ const Waiters: React.FC = () => {
                       <td className="centered">
                         <img
                           src={
-                            waiter.url_photo ? waiter.url_photo : waiterImage
+                            waiter.avatar_url ? waiter.avatar_url : waiterImage
                           }
                           className="waiterImage"
                           alt="waiter"
                         />
                       </td>
                       <td>{waiter.name}</td>
-                      <td>{waiter.login}</td>
-                      <td className="centered">{waiter.phone_number}</td>
+                      <td>{waiter.username}</td>
+                      <td className="centered">{waiter.establishment.name}</td>
                       <td className="centered">
                         {waiter.active ? 'Ativo' : 'Inativo'}
                       </td>
                       <td className="centered">
-                        <Link to={`/settings/waiters/${waiter.id}`}>
+                        <Link
+                          to={{
+                            pathname: `/settings/waiters/edit`,
+                            state: {
+                              waiter_id: waiter.id,
+                            },
+                          }}
+                        >
                           <FiEdit size={28} />
                         </Link>
                       </td>
@@ -102,4 +123,3 @@ const Waiters: React.FC = () => {
     </Container>
   );
 };
-export default Waiters;

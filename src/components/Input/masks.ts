@@ -21,6 +21,15 @@ export function currency(
   return e;
 }
 
+export function number(
+  e: React.FormEvent<HTMLInputElement>,
+): React.FormEvent<HTMLInputElement> {
+  let { value } = e.currentTarget;
+  value = value.replace(/\D/g, '');
+  e.currentTarget.value = value;
+  return e;
+}
+
 export function cpf(
   e: React.FormEvent<HTMLInputElement>,
 ): React.FormEvent<HTMLInputElement> {
@@ -31,6 +40,23 @@ export function cpf(
     value = value.replace(/(\d{3})(\d)/, '$1.$2');
     value = value.replace(/(\d{3})(\d)/, '$1.$2');
     value = value.replace(/(\d{3})(\d{2})$/, '$1-$2');
+    e.currentTarget.value = value;
+  }
+  return e;
+}
+
+//  XX. XXX. XXX/0001-XX
+export function cnpj(
+  e: React.FormEvent<HTMLInputElement>,
+): React.FormEvent<HTMLInputElement> {
+  e.currentTarget.maxLength = 18;
+  let { value } = e.currentTarget;
+  if (!value.match(/^(\d{2}).(\d{3}).(\d{3})\/(\d{4})-(\d{2})$/)) {
+    value = value.replace(/\D/g, '');
+    value = value.replace(/(\d{2})(\d)/, '$1.$2');
+    value = value.replace(/(\d{3})(\d)/, '$1.$2');
+    value = value.replace(/(\d{3})(\d)/, '$1/$2');
+    value = value.replace(/(\d{4})(\d{2})$/, '$1-$2');
     e.currentTarget.value = value;
   }
   return e;

@@ -6,10 +6,12 @@ interface DropdownMenuProps {
 
 export const Container = styled.header`
   display: flex;
-  justify-content: space-between;
-  align-items: center;
   height: 100px;
   padding: 30px;
+  background: #f7f8fa;
+
+  justify-content: space-between;
+  align-items: center;
 `;
 
 export const Content = styled.div`
@@ -81,6 +83,7 @@ export const DropdownMenuContent = styled.div<DropdownMenuProps>`
     border: none;
     width: 100%;
     text-decoration: none;
+    border-radius: 5px;
 
     svg.drop {
       width: 16;

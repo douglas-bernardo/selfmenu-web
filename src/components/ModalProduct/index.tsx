@@ -16,10 +16,10 @@ import { Form, ImageContainer } from './styles';
 import Modal from '../Modal';
 import Input from '../Input';
 
-import getValidationErros from '../../utils/getValidationErros';
+import { getValidationErrors } from '../../utils/getValidationErrors';
 import TextArea from '../TextArea';
 import { api } from '../../services/api';
-import Select from '../Select';
+import { Select } from '../Select';
 
 const selectCustomStyles = {
   container: base => ({
@@ -101,7 +101,7 @@ const ModalProduct: React.FC<IModalProps> = ({
         setIsOpen();
       } catch (err) {
         if (err instanceof Yup.ValidationError) {
-          const errors = getValidationErros(err);
+          const errors = getValidationErrors(err);
           formRef.current?.setErrors(errors);
         }
       }

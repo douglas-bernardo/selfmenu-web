@@ -42,7 +42,7 @@ export const Container = styled.div<ContainerProps>`
     border-radius: 15px;
 
     left: 2px;
-    transition: all 0.3s ease;
+    transition: all 0.1s ease;
 
     ${props =>
       props.isActive &&

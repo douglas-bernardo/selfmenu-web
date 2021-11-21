@@ -28,4 +28,9 @@ export default createGlobalStyle`
     cursor: pointer;
   }
 
+  body,html {
+    margin: 0;
+    padding: 0;
+  }
+
 `;

@@ -1,10 +1,12 @@
-import React, { useCallback, useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 
+import { Link } from 'react-router-dom';
 import { Container, Content } from '../../components/Container';
-import Sidebar from '../../components/Sidebar';
-import Header from '../../components/Header';
-import ToggleButton from '../../components/ToggleButton';
+import { Sidebar } from '../../components/Sidebar';
+import { Header } from '../../components/Header';
 import Loading from '../../components/Loading';
+
+import coverDefault from '../../assets/default.jpeg';
 
 import { api } from '../../services/api';
 
@@ -12,24 +14,25 @@ import {
   Main,
   CategoryContent,
   CategoryContentHeader,
-  CategoriesTable,
+  ListCategoryContainer,
+  CategoryContainer,
 } from './styles';
-import ModalCategory from '../../components/ModalCategory';
 
-interface Category {
+interface ICategory {
   id: number;
-  description: string;
-  status: boolean;
+  name: string;
+  image_cover: string;
+  image_cover_url: string;
+  active: boolean;
 }
 
-const Categories: React.FC = () => {
-  const [showModalCategory, setModalCategory] = useState(false);
+export const Categories: React.FC = () => {
   const [isLoading, setIsLoading] = useState(true);
-  const [categories, setCategories] = useState<Category[]>([]);
+  const [categories, setCategories] = useState<ICategory[]>([]);
 
   useEffect(() => {
     api
-      .get<Category[]>(`/category`)
+      .get<ICategory[]>(`/categories`)
       .then(response => {
         const categoriesArray = response.data;
         setCategories(categoriesArray);
@@ -40,55 +43,9 @@ const Categories: React.FC = () => {
       });
   }, []);
 
-  const toggleModalCategory = useCallback(() => {
-    setModalCategory(!showModalCategory);
-  }, [showModalCategory]);
-
-  const handleCategory = useCallback(
-    async (category: Omit<Category, 'id'>) => {
-      const response = await api.post('/category', {
-        ...category,
-        status: true,
-      });
-      setCategories([...categories, response.data]);
-    },
-    [categories],
-  );
-
-  const updateStatus = useCallback(
-    async (id: number) => {
-      try {
-        const categoryFound = categories.find(category => category.id === id);
-        if (!categoryFound) return;
-
-        const response = await api.put(`category/${id}`, {
-          ...categoryFound,
-          status: !categoryFound.status,
-        });
-
-        const editedCategory = response.data;
-        setCategories(
-          categories.map(mappedCategory =>
-            mappedCategory.id === editedCategory.id
-              ? { ...editedCategory }
-              : mappedCategory,
-          ),
-        );
-      } catch (error) {
-        console.log(error);
-      }
-    },
-    [categories],
-  );
-
   return (
     <Container>
       <Sidebar />
-      <ModalCategory
-        isOpen={showModalCategory}
-        setIsOpen={toggleModalCategory}
-        handleCategory={handleCategory}
-      />
       <Content>
         <Header>
           <h1 className="pageTitle">Categorias</h1>
@@ -96,45 +53,41 @@ const Categories: React.FC = () => {
         <Main>
           <CategoryContent>
             <CategoryContentHeader>
-              <button type="button" onClick={toggleModalCategory}>
-                Nova Categoria
-              </button>
+              <Link to="/categories/new">Novo</Link>
               <input
                 type="text"
                 className="search-bar"
                 placeholder="Pesquisar"
               />
             </CategoryContentHeader>
-            <CategoriesTable>
-              <thead>
-                <tr>
-                  <th>ID</th>
-                  <th>DESCRIÇÃO</th>
-                  <th>ATIVO</th>
-                </tr>
-              </thead>
-              <tbody>
-                {categories.map(category => (
-                  <tr key={category.id}>
-                    <td>{category.id}</td>
-                    <td>{category.description}</td>
-                    <td>
-                      <ToggleButton
-                        categoryId={category.id}
-                        selected={category.status}
-                        onChange={updateStatus}
-                      />
-                    </td>
-                  </tr>
-                ))}
-              </tbody>
-            </CategoriesTable>
             {isLoading && <Loading />}
+
+            <ListCategoryContainer>
+              {categories.map(category => (
+                <CategoryContainer key={category.id}>
+                  <Link
+                    to={{
+                      pathname: '/categories/edit',
+                      state: {
+                        category_id: category.id,
+                      },
+                    }}
+                  >
+                    <img
+                      src={category.image_cover_url || coverDefault}
+                      alt="cover"
+                    />
+                    <div className="cardContent">
+                      <h3>{category.name}</h3>
+                      <p>{category.active ? 'Ativo' : 'Inativo'}</p>
+                    </div>
+                  </Link>
+                </CategoryContainer>
+              ))}
+            </ListCategoryContainer>
           </CategoryContent>
         </Main>
       </Content>
     </Container>
   );
 };
-
-export default Categories;
