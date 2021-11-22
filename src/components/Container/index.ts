@@ -4,6 +4,8 @@ export const Container = styled.div`
   position: relative;
   margin: 0 auto;
   display: flex;
+
+  height: 100vh;
 `;
 
 export const Content = styled.div`

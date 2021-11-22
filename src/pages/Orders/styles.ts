@@ -7,7 +7,8 @@ interface ButtonProps {
 export const Main = styled.div`
   display: flex;
   width: 100%;
-  height: calc(91vh - 3px);
+  margin-top: 100px;
+  height: 100%;
 
   flex-direction: column;
   padding: 30px;

@@ -45,12 +45,26 @@ export const TableDetailsHeader = styled.div`
   background: #fff;
   margin-bottom: 3px;
 
-  span {
-    font-size: 18px;
-    font-weight: bold;
+  div.controls {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    span.codeText {
+      color: #ff9000;
+      font-weight: bold;
+      line-height: 16px;
+      margin-right: 15px;
+    }
   }
 
-  button {
+  button.genSecurityCode {
+    background: transparent;
+    border: 0;
+    margin-right: 15px;
+  }
+
+  button.close {
     height: 50px;
     width: 50px;
     background: transparent;
@@ -134,4 +148,6 @@ export const OrderResume = styled.div`
   flex: 1;
   align-items: center;
   justify-content: space-between;
+
+  padding: 5px 0;
 `;

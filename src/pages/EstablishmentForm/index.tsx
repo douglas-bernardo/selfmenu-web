@@ -20,7 +20,7 @@ import Input from '../../components/Input';
 import Loading from '../../components/Loading';
 import ToggleButton from '../../components/ToggleButton';
 
-import { Main, Form } from './styles';
+import { Main, FormWrapper, Form } from './styles';
 import { toCNPJ } from '../../utils/numberFormat';
 import { BackPageButton } from '../../components/BackPageButton';
 
@@ -197,54 +197,56 @@ export const EstablishmentForm: React.FC = () => {
           {isLoading ? (
             <Loading />
           ) : (
-            <Form ref={formRef} onSubmit={handleSubmit}>
+            <FormWrapper>
               <BackPageButton page="settings/establishments" />
-              <div className="row">
-                <div className="label">Nome:</div>
-                <Input name="name" defaultValue={establishment?.name} />
-              </div>
-
-              <div className="row">
-                <div className="label">CNPJ:</div>
-                <Input
-                  name="cnpj"
-                  mask="cnpj"
-                  defaultValue={establishment?.cnpjFormatted}
-                />
-              </div>
-
-              <div className="row">
-                <div className="label">Descrição:</div>
-                <Input
-                  name="description"
-                  defaultValue={establishment?.description}
-                />
-              </div>
-
-              <div className="row">
-                <div className="label">Tipo:</div>
-                <Select
-                  name="establishment_type_id"
-                  options={typeEstablishmentOptions}
-                  menuPlacement="auto"
-                  placeholder="Selecione o tipo de estabelecimento..."
-                />
-              </div>
-
-              {location.state?.establishment_id && (
+              <Form ref={formRef} onSubmit={handleSubmit}>
                 <div className="row">
-                  <div className="label">Ativo:</div>
-                  <ToggleButton
-                    selected={establishment?.active}
-                    onChange={updateAvailability}
+                  <div className="label">Nome:</div>
+                  <Input name="name" defaultValue={establishment?.name} />
+                </div>
+
+                <div className="row">
+                  <div className="label">CNPJ:</div>
+                  <Input
+                    name="cnpj"
+                    mask="cnpj"
+                    defaultValue={establishment?.cnpjFormatted}
                   />
                 </div>
-              )}
 
-              <button type="submit" data-testid="add-establishment-button">
-                <p className="text">Salvar</p>
-              </button>
-            </Form>
+                <div className="row">
+                  <div className="label">Descrição:</div>
+                  <Input
+                    name="description"
+                    defaultValue={establishment?.description}
+                  />
+                </div>
+
+                <div className="row">
+                  <div className="label">Tipo:</div>
+                  <Select
+                    name="establishment_type_id"
+                    options={typeEstablishmentOptions}
+                    menuPlacement="auto"
+                    placeholder="Selecione o tipo de estabelecimento..."
+                  />
+                </div>
+
+                {location.state?.establishment_id && (
+                  <div className="row">
+                    <div className="label">Ativo:</div>
+                    <ToggleButton
+                      selected={establishment?.active}
+                      onChange={updateAvailability}
+                    />
+                  </div>
+                )}
+
+                <button type="submit" data-testid="add-establishment-button">
+                  <p className="text">Salvar</p>
+                </button>
+              </Form>
+            </FormWrapper>
           )}
         </Main>
       </Content>

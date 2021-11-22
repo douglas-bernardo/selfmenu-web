@@ -7,8 +7,6 @@ import { Header } from '../../components/Header';
 
 import waiter from '../../assets/waiter.svg';
 import establishment from '../../assets/establishment.png';
-import table from '../../assets/table.png';
-import menu from '../../assets/menu.png';
 
 import {
   Main,

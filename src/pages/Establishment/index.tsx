@@ -19,6 +19,7 @@ import { BreadCrumb } from '../../components/BreadCrumb';
 import { BreadCrumbItem } from '../../components/BreadCrumbItem';
 import { api } from '../../services/api';
 import Tag from '../../components/Tag';
+import { BackPageButton } from '../../components/BackPageButton';
 
 interface IEstablishmentType {
   id: number;
@@ -65,7 +66,8 @@ export const Establishments: React.FC = () => {
         <Main>
           <ProductContent>
             <ProductContentHeader>
-              <Link to="/settings/establishments/new">
+              <BackPageButton page="settings" />
+              <Link className="new" to="/settings/establishments/new">
                 Novo Estabelecimento
               </Link>
             </ProductContentHeader>

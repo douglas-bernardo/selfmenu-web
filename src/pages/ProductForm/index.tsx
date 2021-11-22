@@ -7,14 +7,13 @@ import React, {
 } from 'react';
 import { FormHandles } from '@unform/core';
 import * as Yup from 'yup';
-import { Link, useHistory, useLocation } from 'react-router-dom';
+import { useHistory, useLocation } from 'react-router-dom';
 import { OptionsType, OptionTypeBase } from 'react-select';
 
 import { FiPlus } from 'react-icons/fi';
-import { TiArrowLeftThick } from 'react-icons/ti';
 
 import { Container, Content } from '../../components/Container';
-import { Main, ProductContainer, Form, ImageContainer } from './styles';
+import { Main, FormWrapper, Form, ImageContainer } from './styles';
 
 import { getValidationErrors } from '../../utils/getValidationErrors';
 import { Sidebar } from '../../components/Sidebar';
@@ -205,7 +204,7 @@ export const ProductForm: React.FC = () => {
           </BreadCrumb>
         </Header>
         <Main>
-          <ProductContainer>
+          <FormWrapper>
             <BackPageButton page="products" />
             {product && (
               <Form ref={formRef} onSubmit={handleSubmit}>
@@ -291,7 +290,7 @@ export const ProductForm: React.FC = () => {
                 </button>
               </Form>
             )}
-          </ProductContainer>
+          </FormWrapper>
         </Main>
       </Content>
     </Container>

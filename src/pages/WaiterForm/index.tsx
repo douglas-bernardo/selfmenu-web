@@ -15,7 +15,7 @@ import { FiCamera } from 'react-icons/fi';
 import { FiUser, FiLock } from 'react-icons/fi';
 
 import { Container, Content } from '../../components/Container';
-import { Main, Form, ImageContainer } from './styles';
+import { Main, FormWrapper, Form, ImageContainer } from './styles';
 
 import { getValidationErrors } from '../../utils/getValidationErrors';
 import { Sidebar } from '../../components/Sidebar';
@@ -204,89 +204,91 @@ export const WaiterForm: React.FC = () => {
           {isLoading ? (
             <Loading />
           ) : (
-            <Form ref={formRef} onSubmit={handleSubmit}>
+            <FormWrapper>
               <BackPageButton page="settings/waiters" />
-              <div className="row">
-                <div className="label">Foto:</div>
-                <ImageContainer title="Clique para alterar">
-                  <label htmlFor="image" className="new-image">
-                    {previewImage ? (
-                      <img src={previewImage} alt="ImageName" />
-                    ) : (
-                      <FiCamera />
-                    )}
-                    <input
-                      name="image"
-                      type="file"
-                      id="image"
-                      onChange={handleSelectImage}
-                    />
-                  </label>
-                </ImageContainer>
-              </div>
-              <div className="row">
-                <div className="label">Nome:</div>
-                <Input
-                  name="name"
-                  placeholder="Nome do Garçom"
-                  defaultValue={waiter?.name}
-                />
-              </div>
-
-              <div className="row">
-                <div className="label">CPF:</div>
-                <Input
-                  name="cpf"
-                  mask="cpf"
-                  placeholder="CPF"
-                  defaultValue={waiter?.cpf_formatted}
-                />
-              </div>
-
-              <div className="row">
-                <div className="label">Usuário:</div>
-                <Input
-                  name="username"
-                  icon={FiUser}
-                  placeholder="Login"
-                  defaultValue={waiter?.username}
-                />
-              </div>
-
-              <div className="row">
-                <div className="label">Senha:</div>
-                <Input
-                  name="password"
-                  icon={FiLock}
-                  type="password"
-                  placeholder="Senha"
-                />
-              </div>
-
-              <div className="row">
-                <div className="label">Estabelecimento:</div>
-                <Select
-                  name="establishment_id"
-                  options={establishmentOptions}
-                  menuPlacement="auto"
-                  placeholder="Selecione o tipo de estabelecimento de atuação"
-                />
-              </div>
-
-              {location.state?.waiter_id && (
+              <Form ref={formRef} onSubmit={handleSubmit}>
                 <div className="row">
-                  <div className="label">Ativo:</div>
-                  <ToggleButton
-                    selected={waiter?.active}
-                    onChange={handleActivateWaiter}
+                  <div className="label">Foto:</div>
+                  <ImageContainer title="Clique para alterar">
+                    <label htmlFor="image" className="new-image">
+                      {previewImage ? (
+                        <img src={previewImage} alt="ImageName" />
+                      ) : (
+                        <FiCamera />
+                      )}
+                      <input
+                        name="image"
+                        type="file"
+                        id="image"
+                        onChange={handleSelectImage}
+                      />
+                    </label>
+                  </ImageContainer>
+                </div>
+                <div className="row">
+                  <div className="label">Nome:</div>
+                  <Input
+                    name="name"
+                    placeholder="Nome do Garçom"
+                    defaultValue={waiter?.name}
                   />
                 </div>
-              )}
 
-              <button type="submit" data-test-id="add-waiter-button">
-                <p className="text">Salvar</p>
-              </button>
-            </Form>
+                <div className="row">
+                  <div className="label">CPF:</div>
+                  <Input
+                    name="cpf"
+                    mask="cpf"
+                    placeholder="CPF"
+                    defaultValue={waiter?.cpf_formatted}
+                  />
+                </div>
+
+                <div className="row">
+                  <div className="label">Usuário:</div>
+                  <Input
+                    name="username"
+                    icon={FiUser}
+                    placeholder="Login"
+                    defaultValue={waiter?.username}
+                  />
+                </div>
+
+                <div className="row">
+                  <div className="label">Senha:</div>
+                  <Input
+                    name="password"
+                    icon={FiLock}
+                    type="password"
+                    placeholder="Senha"
+                  />
+                </div>
+
+                <div className="row">
+                  <div className="label">Estabelecimento:</div>
+                  <Select
+                    name="establishment_id"
+                    options={establishmentOptions}
+                    menuPlacement="auto"
+                    placeholder="Selecione o tipo de estabelecimento de atuação"
+                  />
+                </div>
+
+                {location.state?.waiter_id && (
+                  <div className="row">
+                    <div className="label">Ativo:</div>
+                    <ToggleButton
+                      selected={waiter?.active}
+                      onChange={handleActivateWaiter}
+                    />
+                  </div>
+                )}
+
+                <button type="submit" data-test-id="add-waiter-button">
+                  <p className="text">Salvar</p>
+                </button>
+              </Form>
+            </FormWrapper>
           )}
         </Main>
       </Content>

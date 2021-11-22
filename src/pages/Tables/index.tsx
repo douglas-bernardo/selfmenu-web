@@ -1,20 +1,14 @@
 import React, { useEffect, useState, useCallback } from 'react';
 
 import { AiOutlineQrcode } from 'react-icons/ai';
-import { BsClockHistory } from 'react-icons/bs';
-import { GoTasklist } from 'react-icons/go';
-import { BiLoaderCircle } from 'react-icons/bi';
-import { IoFastFoodOutline } from 'react-icons/io5';
 import { HiOutlinePlus } from 'react-icons/hi';
 import { Link } from 'react-router-dom';
 
 import { Container, Content } from '../../components/Container';
 
-import { TableDetails } from '../../components/TableDetails';
+import { TableDetails } from './TableDetails';
 import { Sidebar } from '../../components/Sidebar';
 import { Header } from '../../components/Header';
-
-import waiterLogo from '../../assets/waiter.svg';
 
 import {
   Main,
@@ -23,20 +17,16 @@ import {
   Title,
   HeaderControls,
   CRCodeGenButton,
-  TablesContainer,
-  TableItem,
+  TablesSection,
+  SectionHeader,
+  TablesSectionBody,
 } from './styles';
 
 import { api } from '../../services/api';
 import Loading from '../../components/Loading';
 import PrintQRCodeArea from '../../components/PrintQRCodeArea';
 
-const icons = {
-  'Aguardando Pedido': <BsClockHistory size={28} />,
-  'Aceito [fila]': <GoTasklist size={28} />,
-  'Em Preparação': <BiLoaderCircle size={28} />,
-  Entregue: <IoFastFoodOutline size={28} />,
-};
+import { TableItem } from './TableItem';
 
 interface IWaiter {
   name: string;
@@ -63,17 +53,51 @@ interface Table {
   orders: IOrder[];
 }
 
+type IFilterResult = [Table[], Table[], Table[]];
+
 export const Tables: React.FC = () => {
-  const [tables, setTables] = useState<Table[]>([]);
   const [isLoading, setIsLoading] = useState(true);
   const [showPrintArea, setShowPrintArea] = useState(false);
   const [showTableDetails, setShowTableDetails] = useState(false);
+
+  const [tables, setTables] = useState<Table[]>([]);
+  const [closingTables, setClosingTables] = useState<Table[]>([]);
+  const [busyTables, setBusyTables] = useState<Table[]>([]);
+  const [availableTables, setAvailableTables] = useState<Table[]>([]);
+
   const [selectedTable, setSelectedTable] = useState<string>();
 
   useEffect(() => {
     api
       .get<Table[]>(`/tables`)
       .then(response => {
+        const [available, busy, closing] = response.data.reduce(
+          (result: IFilterResult, item: Table) => {
+            switch (item.status_table_id) {
+              case 1:
+                result[0].push(item);
+                break;
+
+              case 2:
+                result[1].push(item);
+                break;
+
+              case 3:
+                result[2].push(item);
+                break;
+
+              default:
+                break;
+            }
+            return result;
+          },
+          [[], [], []],
+        );
+
+        setClosingTables(closing);
+        setBusyTables(busy);
+        setAvailableTables(available);
+
         setTables(response.data);
         setIsLoading(false);
       })
@@ -124,35 +148,57 @@ export const Tables: React.FC = () => {
                     </Link>
                   </HeaderControls>
                 </TableContentHeader>
-                <TablesContainer>
-                  {tables.map(table => (
-                    <TableItem
-                      key={table.id}
-                      status={Number(table.status_table_id)}
-                    >
-                      <button
-                        type="button"
-                        onClick={() => handleShowTableDetails(table.id)}
-                      >
-                        <header>
-                          <span>{table.number}</span>
-                          <h4>{table.status_table.name}</h4>
-                        </header>
-                        <main>{`${table.orders.length} pedidos`}</main>
-                        <footer>
-                          <img
-                            src={table.waiter.avatar_url || waiterLogo}
-                            alt="waiterLogo"
-                          />
-                          <div>
-                            <small>Garçom:</small>
-                            <p>{table.waiter.name}</p>
-                          </div>
-                        </footer>
-                      </button>
-                    </TableItem>
-                  ))}
-                </TablesContainer>
+
+                <TablesSection>
+                  <SectionHeader>
+                    <h4>Em Fechamento</h4>
+
+                    <div className="line" />
+                  </SectionHeader>
+                  <TablesSectionBody>
+                    {closingTables.map(table => (
+                      <TableItem
+                        key={table.id}
+                        table={table}
+                        handleShowDetails={handleShowTableDetails}
+                      />
+                    ))}
+                  </TablesSectionBody>
+                </TablesSection>
+
+                <TablesSection>
+                  <SectionHeader>
+                    <h4>Ocupadas</h4>
+
+                    <div className="line" />
+                  </SectionHeader>
+                  <TablesSectionBody>
+                    {busyTables.map(table => (
+                      <TableItem
+                        key={table.id}
+                        table={table}
+                        handleShowDetails={handleShowTableDetails}
+                      />
+                    ))}
+                  </TablesSectionBody>
+                </TablesSection>
+
+                <TablesSection>
+                  <SectionHeader>
+                    <h4>Disponíveis</h4>
+
+                    <div className="line" />
+                  </SectionHeader>
+                  <TablesSectionBody>
+                    {availableTables.map(table => (
+                      <TableItem
+                        key={table.id}
+                        table={table}
+                        handleShowDetails={handleShowTableDetails}
+                      />
+                    ))}
+                  </TablesSectionBody>
+                </TablesSection>
               </TableContent>
 
               <TableDetails

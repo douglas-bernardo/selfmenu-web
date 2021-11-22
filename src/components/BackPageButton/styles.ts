@@ -3,10 +3,8 @@ import { shade } from 'polished';
 
 export const Container = styled.div`
   display: flex;
-  padding-bottom: 20px;
-  margin-bottom: 30px;
 
-  a {
+  a.backPage {
     display: flex;
     align-items: center;
 

@@ -19,6 +19,11 @@ import {
   ProductTable,
 } from './styles';
 
+interface ICategory {
+  id: number;
+  name: string;
+}
+
 interface IProduct {
   id: number;
   name: string;
@@ -26,9 +31,8 @@ interface IProduct {
   price: string;
   quantity: number;
   available: boolean;
-  category_id: number;
-  url_photo: string;
   rate: number;
+  category: ICategory;
   photo_url: string;
 }
 
@@ -91,8 +95,10 @@ export const Products: React.FC = () => {
               <thead>
                 <tr>
                   <th>Foto</th>
-                  <th>Nome/Descrição</th>
+                  <th>Nome</th>
+                  <th>Descrição</th>
                   <th>Classificação</th>
+                  <th>Categoria</th>
                   <th>Preço</th>
                   <th>Situação</th>
                   <th>Ações</th>
@@ -112,10 +118,9 @@ export const Products: React.FC = () => {
                         alt="ProductImage"
                       />
                     </td>
-                    <td>
-                      <strong>{product.name}</strong>
-                      <p>{product.description}</p>
-                    </td>
+                    <td>{product.name}</td>
+                    <td>{product.description}</td>
+                    <td>{product.category.name}</td>
                     <td>
                       <AiFillStar className="gold" />
                       <AiFillStar className="gold" />

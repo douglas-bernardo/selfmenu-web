@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useCallback, useMemo } from 'react';
+import React, { useEffect, useState, useCallback } from 'react';
 import Select from 'react-select';
 
 import { FaRegClock } from 'react-icons/fa';

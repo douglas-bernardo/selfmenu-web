@@ -3,18 +3,25 @@ import styled from 'styled-components';
 import { Form as Unform } from '@unform/web';
 
 export const Main = styled.div`
-  max-width: 1120px;
+  height: 100%;
+  overflow: auto;
   padding: 30px;
   color: #3c3c3c;
+  margin-top: 100px;
+
+  max-width: 1120px;
 `;
 
-export const ProductContainer = styled.div`
-  padding: 50px;
+export const FormWrapper = styled.div`
+  padding: 30px;
   background: #fff;
   border-radius: 10px;
+  min-height: 500px;
 `;
 
 export const Form = styled(Unform)`
+  background: #fff;
+  margin-top: 30px;
   display: flex;
   flex-direction: column;
 

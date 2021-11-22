@@ -8,6 +8,7 @@ export const Main = styled.div`
   overflow: auto;
   padding: 30px;
   color: #3c3c3c;
+  margin-top: 100px;
 `;
 
 export const CategoryContent = styled.div`

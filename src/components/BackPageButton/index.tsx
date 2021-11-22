@@ -13,7 +13,7 @@ interface BackPageButtonProps {
 export const BackPageButton: React.FC<BackPageButtonProps> = ({ page }) => {
   return (
     <Container>
-      <Link data-tip data-for="backPage" to={`/${page}`}>
+      <Link className="backPage" data-tip data-for="backPage" to={`/${page}`}>
         <HiOutlineArrowCircleLeft size={35} />
       </Link>
       <ReactTooltip id="backPage" type="info" effect="solid" delayShow={500}>

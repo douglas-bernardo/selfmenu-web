@@ -5,6 +5,7 @@ export const Main = styled.div`
   overflow: auto;
   padding: 30px;
   color: #3c3c3c;
+  margin-top: 100px;
 `;
 
 export const SettingsContent = styled.div`
@@ -23,12 +24,6 @@ export const SettingsContentHeader = styled.header`
 export const SettingsListContainer = styled.div`
   display: grid;
   grid-gap: 1rem;
-
-  /* padding: 50px;
-  background: #fff;
-  border-radius: 10px;
-
-  min-height: 780px; */
 
   @media (min-width: 600px) {
     grid-template-columns: repeat(2, 1fr);

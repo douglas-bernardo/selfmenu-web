@@ -2,9 +2,11 @@ import styled from 'styled-components';
 import { shade } from 'polished';
 
 export const Container = styled.div`
-  height: 90vh;
-  overflow: hidden;
+  height: 100%;
+  overflow: auto;
   padding: 30px;
+  color: #3c3c3c;
+  margin-top: 100px;
 
   background: #fff;
 `;

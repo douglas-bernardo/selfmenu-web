@@ -5,12 +5,10 @@ import React, {
   ChangeEvent,
   useEffect,
 } from 'react';
-import { useLocation, useHistory, Link } from 'react-router-dom';
+import { useLocation, useHistory } from 'react-router-dom';
 
 import { FormHandles } from '@unform/core';
 import * as Yup from 'yup';
-
-import { HiOutlineArrowCircleLeft } from 'react-icons/hi';
 
 import { FiPlus } from 'react-icons/fi';
 
@@ -27,7 +25,7 @@ import { BreadCrumb } from '../../components/BreadCrumb';
 import { BreadCrumbItem } from '../../components/BreadCrumbItem';
 import ToggleButton from '../../components/ToggleButton';
 
-import { Main, Form, ImageContainer } from './styles';
+import { Main, Form, FormWrapper, ImageContainer } from './styles';
 import { BackPageButton } from '../../components/BackPageButton';
 
 interface ICategory {
@@ -161,10 +159,9 @@ export const CategoryForm: React.FC = () => {
           {isLoading ? (
             <Loading />
           ) : (
-            <>
+            <FormWrapper>
+              <BackPageButton page="categories" />
               <Form ref={formRef} onSubmit={handleSubmit}>
-                <BackPageButton page="categories" />
-
                 <div className="row">
                   <div className="label">Capa:</div>
                   <ImageContainer>
@@ -207,7 +204,7 @@ export const CategoryForm: React.FC = () => {
                   <p className="text">Salvar</p>
                 </button>
               </Form>
-            </>
+            </FormWrapper>
           )}
         </Main>
       </Content>

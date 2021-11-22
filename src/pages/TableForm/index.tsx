@@ -20,7 +20,8 @@ import { BreadCrumbItem } from '../../components/BreadCrumbItem';
 import ToggleButton from '../../components/ToggleButton';
 import { Select } from '../../components/Select';
 
-import { Main, Form } from './styles';
+import { Main, FormWrapper, Form } from './styles';
+import { BackPageButton } from '../../components/BackPageButton';
 
 interface IEstablishment {
   id: number;
@@ -196,51 +197,54 @@ export const TableForm: React.FC = () => {
           {isLoading ? (
             <Loading />
           ) : (
-            <Form ref={formRef} onSubmit={handleSubmit}>
-              <div className="row">
-                <div className="label">Capacidade:</div>
-                <Input
-                  name="capacity"
-                  maxLength={1}
-                  defaultValue={table?.capacity}
-                  mask="number"
-                />
-              </div>
-
-              <div className="row">
-                <div className="label">Garçom:</div>
-                <Select
-                  name="waiter_id"
-                  options={waitersOptions}
-                  menuPlacement="auto"
-                  placeholder="Selecione o garçom responsável..."
-                />
-              </div>
-
-              <div className="row">
-                <div className="label">Estabelecimento:</div>
-                <Select
-                  name="establishment_id"
-                  options={establishmentOptions}
-                  menuPlacement="auto"
-                  placeholder="Selecione o estabelecimento..."
-                />
-              </div>
-
-              {location.state?.table_id && (
+            <FormWrapper>
+              <BackPageButton page="tables" />
+              <Form ref={formRef} onSubmit={handleSubmit}>
                 <div className="row">
-                  <div className="label">Ativo:</div>
-                  <ToggleButton
-                    selected={table?.active}
-                    onChange={updateActivateTable}
+                  <div className="label">Capacidade:</div>
+                  <Input
+                    name="capacity"
+                    maxLength={1}
+                    defaultValue={table?.capacity}
+                    mask="number"
                   />
                 </div>
-              )}
 
-              <button type="submit" data-testid="add-establishment-button">
-                <p className="text">Salvar</p>
-              </button>
-            </Form>
+                <div className="row">
+                  <div className="label">Garçom:</div>
+                  <Select
+                    name="waiter_id"
+                    options={waitersOptions}
+                    menuPlacement="auto"
+                    placeholder="Selecione o garçom responsável..."
+                  />
+                </div>
+
+                <div className="row">
+                  <div className="label">Estabelecimento:</div>
+                  <Select
+                    name="establishment_id"
+                    options={establishmentOptions}
+                    menuPlacement="auto"
+                    placeholder="Selecione o estabelecimento..."
+                  />
+                </div>
+
+                {location.state?.table_id && (
+                  <div className="row">
+                    <div className="label">Ativo:</div>
+                    <ToggleButton
+                      selected={table?.active}
+                      onChange={updateActivateTable}
+                    />
+                  </div>
+                )}
+
+                <button type="submit" data-testid="add-establishment-button">
+                  <p className="text">Salvar</p>
+                </button>
+              </Form>
+            </FormWrapper>
           )}
         </Main>
       </Content>

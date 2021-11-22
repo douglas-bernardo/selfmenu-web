@@ -5,9 +5,10 @@ import searchIcon from '../../assets/search.svg';
 
 export const Main = styled.div`
   height: 100%;
+  overflow: auto;
   padding: 30px;
-
   color: #3c3c3c;
+  margin-top: 100px;
 `;
 
 export const ProductContent = styled.div`
@@ -21,7 +22,7 @@ export const ProductContentHeader = styled.header`
   display: flex;
   justify-content: space-between;
 
-  a {
+  a.new {
     display: flex;
     height: 40px;
     width: 200px;

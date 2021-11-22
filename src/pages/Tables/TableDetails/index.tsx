@@ -1,10 +1,13 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useCallback } from 'react';
 
+import ReactTooltip from 'react-tooltip';
 import { HiX } from 'react-icons/hi';
 import { RiMoneyDollarCircleLine } from 'react-icons/ri';
-import { api } from '../../services/api';
-import { numberFormatAsCurrency } from '../../utils/numberFormat';
-import Loading from '../Loading';
+import { MdScreenLockPortrait } from 'react-icons/md';
+
+import { api } from '../../../services/api';
+import { numberFormatAsCurrency } from '../../../utils/numberFormat';
+import Loading from '../../../components/Loading';
 
 import {
   Container,
@@ -18,6 +21,8 @@ import {
   TotalTable,
   PaymentButton,
 } from './styles';
+import { useToast } from '../../../hooks/toast';
+import { ModalInfo } from '../../../components/ModalInfo';
 
 interface IWaiter {
   name: string;
@@ -49,6 +54,8 @@ interface ITable {
   id: string;
   number: number;
   waiter: IWaiter;
+  token: string;
+  establishment_id: string;
   url_authenticate: string;
   status_table_id: number;
   status_table: IStatusTable;
@@ -69,14 +76,22 @@ interface TableDetailsProps {
   setIsOpen: () => void;
 }
 
+interface ISecurityCode {
+  number: number;
+  token: string;
+}
+
 export const TableDetails: React.FC<TableDetailsProps> = ({
   table_id,
   isOpen,
   setIsOpen,
 }) => {
+  const { addToast } = useToast();
+  const [showModalSecurityCode, setShowModalSecurityCode] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
   const [table, setTable] = useState<ITable>();
   const [total, setTotal] = useState('');
+  const [securityCode, setSecurityCode] = useState('');
   const [ordersResume, setOrdersResume] = useState<IOrderResume[]>();
 
   useEffect(() => {
@@ -123,14 +138,72 @@ export const TableDetails: React.FC<TableDetailsProps> = ({
     setIsLoading(false);
   }, [table_id]);
 
+  const toggleModalSecurity = useCallback(() => {
+    setShowModalSecurityCode(!showModalSecurityCode);
+  }, [showModalSecurityCode]);
+
+  const handleGenerateSecurityCode = useCallback(() => {
+    if (table) {
+      api
+        .post<ISecurityCode>('/table-tokens', {
+          table_number: table.number,
+          establishment_id: table.establishment_id,
+        })
+        .then(response => {
+          setSecurityCode(response.data.token);
+          toggleModalSecurity();
+        })
+        .catch(err => {
+          addToast({
+            type: 'error',
+            title: 'Não Permitido',
+            description: err.response.data.message
+              ? err.response.data.message
+              : 'Erro na solicitação',
+          });
+        });
+    }
+  }, [table, addToast, toggleModalSecurity]);
+
   return (
     <Container is_show={isOpen}>
+      <ModalInfo
+        title="Código com sucesso!"
+        message={`MESA: ${table?.number} | CÓDIGO DE SEGURANÇA: ${securityCode}`}
+        isOpen={showModalSecurityCode}
+        setIsOpen={toggleModalSecurity}
+      />
       <TableDetailsContent>
         <TableDetailsHeader>
-          <span>{`Mesa ${table?.number}`}</span>
-          <button type="button" onClick={setIsOpen}>
-            <HiX size={30} />
-          </button>
+          <h4>{`Mesa ${table?.number}`}</h4>
+          <div className="controls">
+            {table?.token ? (
+              <span className="codeText">{`Código: ${table?.token}`}</span>
+            ) : (
+              <>
+                <button
+                  data-tip
+                  data-for="genSecurityCode"
+                  className="genSecurityCode"
+                  type="button"
+                  onClick={handleGenerateSecurityCode}
+                >
+                  <MdScreenLockPortrait size={25} color="#ff9000" />
+                </button>
+                <ReactTooltip
+                  id="genSecurityCode"
+                  type="warning"
+                  effect="solid"
+                  delayShow={500}
+                >
+                  <span>Gerar Código de Segurança</span>
+                </ReactTooltip>
+              </>
+            )}
+            <button className="close" type="button" onClick={setIsOpen}>
+              <HiX size={25} color="#3c3c3c" />
+            </button>
+          </div>
         </TableDetailsHeader>
         <TableDetailsMain>
           <h3>Pedidos:</h3>
@@ -140,8 +213,12 @@ export const TableDetails: React.FC<TableDetailsProps> = ({
               <OrderContainer key={item.id}>
                 <CustomerName>{item.customer_name}</CustomerName>
                 <OrderResume>
-                  <span>{`${item.items_quantity} Itens`}</span>
-                  <h4>{item.amount_formatted}</h4>
+                  <small>
+                    {item.items_quantity === 1
+                      ? `${item.items_quantity} Item`
+                      : `${item.items_quantity} Itens`}
+                  </small>
+                  <small>{item.amount_formatted}</small>
                 </OrderResume>
               </OrderContainer>
             ))}

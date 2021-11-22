@@ -5,6 +5,11 @@ interface DropdownMenuProps {
 }
 
 export const Container = styled.header`
+  background-color: #333;
+  position: fixed;
+  top: 0;
+  width: calc(100% - 256px);
+
   display: flex;
   height: 100px;
   padding: 30px;
@@ -52,14 +57,15 @@ export const DropdownMenu = styled.div``;
 export const DropdownMenuContent = styled.div<DropdownMenuProps>`
   position: absolute;
   right: 0px;
-  top: calc(100% + 24px);
+  top: calc(100% + 10px);
   width: 256px;
   padding: 0px;
   background: #fff;
   border-radius: 5px;
-  box-shadow: rgb(0 0 0 / 40%) 0px 5px 10px;
+  box-shadow: rgb(0 0 0 / 40%) 4px 4px 4px 2px;
   transition: opacity 0.2s ease 0s, visibility 0.2s ease 0s;
   opacity: 1;
+  z-index: 1;
 
   ${props =>
     props.isVisible

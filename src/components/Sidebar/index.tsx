@@ -1,6 +1,6 @@
 import React from 'react';
 import { NavLink } from 'react-router-dom';
-import { FaChartLine, FaComments, FaSignOutAlt } from 'react-icons/fa';
+import { FaChartLine, FaSignOutAlt } from 'react-icons/fa';
 import { IoFastFood } from 'react-icons/io5';
 import { GiTable } from 'react-icons/gi';
 import { BiFoodMenu } from 'react-icons/bi';
@@ -25,7 +25,7 @@ const pages: Array<Page> = [
   { page: '/categories', label: 'Categorias', icon: <IoTicketOutline /> },
   { page: '/products', label: 'Produtos', icon: <BiFoodMenu /> },
   { page: '/tables', label: 'Mesas', icon: <GiTable /> },
-  { page: '/feedbacks', label: 'Feedbacks', icon: <FaComments /> },
+  // { page: '/feedbacks', label: 'Feedbacks', icon: <FaComments /> },
   { page: '/settings', label: 'Configurações', icon: <FiSettings /> },
 ];
 
