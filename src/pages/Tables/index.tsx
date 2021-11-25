@@ -57,6 +57,8 @@ type IFilterResult = [Table[], Table[], Table[]];
 
 export const Tables: React.FC = () => {
   const [isLoading, setIsLoading] = useState(true);
+  const [refresh, setRefresh] = useState(false);
+
   const [showPrintArea, setShowPrintArea] = useState(false);
   const [showTableDetails, setShowTableDetails] = useState(false);
 
@@ -100,11 +102,12 @@ export const Tables: React.FC = () => {
 
         setTables(response.data);
         setIsLoading(false);
+        setRefresh(false);
       })
       .catch((error: Error) => {
         console.log(error.message);
       });
-  }, []);
+  }, [refresh]);
 
   const toggleShowPrintArea = useCallback(() => {
     setShowPrintArea(!showPrintArea);
@@ -117,6 +120,10 @@ export const Tables: React.FC = () => {
 
   const handleCloseTableDetails = useCallback(() => {
     setShowTableDetails(false);
+  }, []);
+
+  const handleRefreshTables = useCallback(() => {
+    setRefresh(true);
   }, []);
 
   return (
@@ -205,6 +212,7 @@ export const Tables: React.FC = () => {
                 table_id={selectedTable}
                 isOpen={showTableDetails}
                 setIsOpen={handleCloseTableDetails}
+                handleRefreshTables={handleRefreshTables}
               />
             </Main>
           ))}

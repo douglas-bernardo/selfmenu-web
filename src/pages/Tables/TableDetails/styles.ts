@@ -73,11 +73,29 @@ export const TableDetailsHeader = styled.div`
 `;
 
 export const TableDetailsMain = styled.div`
+  height: 650px;
+  overflow: auto;
+
   padding: 10px;
   background: #fff;
 
   h3 {
     margin: 10px 0 15px 0;
+  }
+
+  ::-webkit-scrollbar {
+    width: 10px;
+  }
+
+  /* Handle */
+  ::-webkit-scrollbar-thumb {
+    background: #f2f5f8;
+    border-radius: 10px;
+  }
+
+  /* Handle on hover */
+  ::-webkit-scrollbar-thumb:hover {
+    background: #a3a3a3;
   }
 `;
 
@@ -150,4 +168,8 @@ export const OrderResume = styled.div`
   justify-content: space-between;
 
   padding: 5px 0;
+
+  small.orderCanceled {
+    color: #c53030;
+  }
 `;

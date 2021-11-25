@@ -29,7 +29,7 @@ export const MainHeaderControls = styled.header`
 export const OrdersContent = styled.div`
   display: flex;
   width: 100%;
-  height: 100%;
+  height: 700px;
 
   flex-direction: row;
   background: #fff;

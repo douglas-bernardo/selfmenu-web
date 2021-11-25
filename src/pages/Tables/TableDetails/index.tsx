@@ -66,6 +66,7 @@ export interface IOrderResume {
   id: string;
   customer_name: string;
   items_quantity: number;
+  status_order_id: number;
   amount: number;
   amount_formatted: string;
 }
@@ -74,6 +75,7 @@ interface TableDetailsProps {
   table_id?: string;
   isOpen: boolean;
   setIsOpen: () => void;
+  handleRefreshTables: () => void;
 }
 
 interface ISecurityCode {
@@ -85,7 +87,9 @@ export const TableDetails: React.FC<TableDetailsProps> = ({
   table_id,
   isOpen,
   setIsOpen,
+  handleRefreshTables,
 }) => {
+  const [refresh, setRefresh] = useState(false);
   const { addToast } = useToast();
   const [showModalSecurityCode, setShowModalSecurityCode] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
@@ -120,11 +124,12 @@ export const TableDetails: React.FC<TableDetailsProps> = ({
               items_quantity: qtd,
               amount: amt.total,
               amount_formatted: numberFormatAsCurrency(amt.total),
+              status_order_id: order.status_order_id,
             };
           });
 
           setOrdersResume(dataOrders);
-
+          setRefresh(false);
           const summary = dataOrders.reduce(
             (acc, item) => acc + item.amount,
             0,
@@ -136,7 +141,7 @@ export const TableDetails: React.FC<TableDetailsProps> = ({
         });
     }
     setIsLoading(false);
-  }, [table_id]);
+  }, [table_id, refresh]);
 
   const toggleModalSecurity = useCallback(() => {
     setShowModalSecurityCode(!showModalSecurityCode);
@@ -152,6 +157,8 @@ export const TableDetails: React.FC<TableDetailsProps> = ({
         .then(response => {
           setSecurityCode(response.data.token);
           toggleModalSecurity();
+          handleRefreshTables();
+          setRefresh(true);
         })
         .catch(err => {
           addToast({
@@ -163,7 +170,7 @@ export const TableDetails: React.FC<TableDetailsProps> = ({
           });
         });
     }
-  }, [table, addToast, toggleModalSecurity]);
+  }, [table, addToast, toggleModalSecurity, handleRefreshTables]);
 
   return (
     <Container is_show={isOpen}>
@@ -214,9 +221,12 @@ export const TableDetails: React.FC<TableDetailsProps> = ({
                 <CustomerName>{item.customer_name}</CustomerName>
                 <OrderResume>
                   <small>
-                    {item.items_quantity === 1
-                      ? `${item.items_quantity} Item`
-                      : `${item.items_quantity} Itens`}
+                    {(item.status_order_id === 7 && (
+                      <small className="orderCanceled">Cancelado</small>
+                    )) ||
+                      (item.items_quantity === 1
+                        ? `${item.items_quantity} Item`
+                        : `${item.items_quantity} Itens`)}
                   </small>
                   <small>{item.amount_formatted}</small>
                 </OrderResume>

@@ -19,7 +19,7 @@ api.interceptors.request.use(
       if (expired) {
         console.log(`token expired: ${expired}`);
         localStorage.removeItem('@selfmenu:token');
-        localStorage.removeItem('@selfmenu:user');
+        localStorage.removeItem('@selfmenu:account');
         localStorage.setItem('@selfmenu:expired', 'session expired');
         window.location.pathname = '/';
       }
