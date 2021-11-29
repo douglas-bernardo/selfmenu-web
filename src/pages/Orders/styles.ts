@@ -112,6 +112,7 @@ export const InProgressButton = styled.button<ButtonProps>`
       border: 2px solid #ff477e;
       color: #fff;
       background: #ff477e;
+      cursor: default;
     `}
 
   justify-content: center;
@@ -144,6 +145,7 @@ export const DoneButton = styled.button<ButtonProps>`
       border: 2px solid #ff477e;
       color: #fff;
       background: #ff477e;
+      cursor: default;
     `}
 
   justify-content: center;

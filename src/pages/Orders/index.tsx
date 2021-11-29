@@ -26,7 +26,7 @@ import {
 import { api } from '../../services/api';
 import Loading from '../../components/Loading';
 import { useToast } from '../../hooks/toast';
-import { OrderItems } from '../../components/OrderItems';
+import { OrderItems } from './OrderItems';
 
 const selectCustomStyles = {
   container: base => ({
@@ -221,6 +221,7 @@ export const Orders: React.FC = () => {
                     type="button"
                     onClick={toggleScreenSelected}
                     isSelected={!isSelected}
+                    disabled={!isSelected}
                   >
                     <FaRegClock />
                     Preparando
@@ -229,6 +230,7 @@ export const Orders: React.FC = () => {
                     type="button"
                     onClick={toggleScreenSelected}
                     isSelected={isSelected}
+                    disabled={isSelected}
                   >
                     <IoFastFood />
                     Finalizados

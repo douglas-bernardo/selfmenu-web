@@ -74,7 +74,12 @@ export const CategoryForm: React.FC = () => {
         formRef.current?.setErrors({});
 
         const schema = Yup.object().shape({
-          name: Yup.string().required('Nome da categoria é obrigatório'),
+          name: Yup.string()
+            .required('Nome da categoria é obrigatório')
+            .matches(
+              /^[aA-zZ\s]+$/,
+              'Apenas alfabetos são permitidos para este campo',
+            ),
         });
 
         await schema.validate(data, { abortEarly: false });

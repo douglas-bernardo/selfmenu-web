@@ -127,7 +127,12 @@ export const WaiterForm: React.FC = () => {
         formRef.current?.setErrors({});
 
         const schema = Yup.object().shape({
-          name: Yup.string().required('Nome do garçom é obrigatório'),
+          name: Yup.string()
+            .required('Nome do garçom é obrigatório')
+            .matches(
+              /^[aA-zZ\s]+$/,
+              'Apenas alfabetos são permitidos para este campo',
+            ),
           cpf: Yup.string().required('CPF é obrigatório'),
           username: Yup.string().required('Login é obrigatória'),
           establishment_id: Yup.string().required(

@@ -5,15 +5,19 @@ import ReactModal from 'react-modal';
 
 interface IModalProps {
   width?: string;
+  background?: string;
   children: any;
   isOpen: boolean;
+  shouldCloseOnOverlayClick?: boolean;
   setIsOpen: () => void;
 }
 
 const Modal: React.FC<IModalProps> = ({
   width,
+  background,
   children,
   isOpen,
+  shouldCloseOnOverlayClick,
   setIsOpen,
 }) => {
   const [modalStatus, setModalStatus] = useState(isOpen);
@@ -24,7 +28,7 @@ const Modal: React.FC<IModalProps> = ({
 
   return (
     <ReactModal
-      shouldCloseOnOverlayClick={!false}
+      shouldCloseOnOverlayClick={shouldCloseOnOverlayClick}
       onRequestClose={setIsOpen}
       isOpen={modalStatus}
       ariaHideApp={false}
@@ -37,7 +41,7 @@ const Modal: React.FC<IModalProps> = ({
           bottom: 'auto',
           marginRight: '-50%',
           transform: 'translate(-50%, -50%)',
-          background: '#FFF',
+          background: background || '#F0F0F5',
           color: '#000000',
           borderRadius: '8px',
           width: width || '736px',

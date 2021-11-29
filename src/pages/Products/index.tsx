@@ -97,8 +97,8 @@ export const Products: React.FC = () => {
                   <th>Foto</th>
                   <th>Nome</th>
                   <th>Descrição</th>
-                  <th>Classificação</th>
                   <th>Categoria</th>
+                  <th>Classificação</th>
                   <th>Preço</th>
                   <th>Situação</th>
                   <th>Ações</th>
@@ -122,10 +122,10 @@ export const Products: React.FC = () => {
                     <td>{product.description}</td>
                     <td>{product.category.name}</td>
                     <td>
-                      <AiFillStar className="gold" />
-                      <AiFillStar className="gold" />
-                      <AiFillStar className="gold" />
-                      <AiFillStar className="gold" />
+                      <AiFillStar className="grey" />
+                      <AiFillStar className="grey" />
+                      <AiFillStar className="grey" />
+                      <AiFillStar className="grey" />
                       <AiFillStar className="grey" />
                       {/* <AiOutlineStar /> */}
                     </td>

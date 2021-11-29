@@ -2,12 +2,8 @@
 import axios from 'axios';
 import jwt from 'jsonwebtoken';
 
-const apiAuth = axios.create({
-  baseURL: 'http://localhost:4444',
-});
-
-const api = axios.create({
-  baseURL: 'http://localhost:3333',
+export const api = axios.create({
+  baseURL: process.env.REACT_APP_API_URL,
 });
 
 api.interceptors.request.use(
@@ -30,5 +26,3 @@ api.interceptors.request.use(
     console.log('error in getting ', err);
   },
 );
-
-export { apiAuth, api };

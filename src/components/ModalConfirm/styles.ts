@@ -1,6 +1,54 @@
-import styled from 'styled-components';
+import styled, { css } from 'styled-components';
 
-export const Container = styled.div`
+export interface ButtonsProps {
+  theme: {
+    confirmYes?:
+      | 'info'
+      | 'success'
+      | 'success_light'
+      | 'danger'
+      | 'danger_light';
+    confirmNo?:
+      | 'info'
+      | 'success'
+      | 'success_light'
+      | 'danger'
+      | 'danger_light';
+  };
+}
+
+interface ContainerProps {
+  buttonType?: ButtonsProps;
+}
+
+const buttonTypeVariations = {
+  info: css`
+    background: #f5f8fa;
+    color: #3c3c3c;
+  `,
+
+  success: css`
+    background: #02c697;
+    color: #fff;
+  `,
+
+  success_light: css`
+    background: rgba(18, 164, 84, 0.5);
+    color: #fff;
+  `,
+
+  danger: css`
+    background: #ff365f;
+    color: #fff;
+  `,
+
+  danger_light: css`
+    background: rgba(255, 10, 84, 0.5);
+    color: #fff;
+  `,
+};
+
+export const Container = styled.div<ContainerProps>`
   display: flex;
   flex-direction: column;
   justify-content: space-between;
@@ -40,12 +88,13 @@ export const Container = styled.div`
     }
 
     button.confirmYes {
-      background: #02c697;
+      ${props =>
+        buttonTypeVariations[props.buttonType?.theme.confirmYes || 'info']}
     }
 
     button.confirmNo {
-      background: #f5f8fa;
-      color: #3c3c3c;
+      ${props =>
+        buttonTypeVariations[props.buttonType?.theme.confirmNo || 'info']}
     }
   }
 `;

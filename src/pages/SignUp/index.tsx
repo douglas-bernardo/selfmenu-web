@@ -44,7 +44,12 @@ export const SignUp: React.FC = () => {
               otherwise: Yup.string(),
             })
             .oneOf([Yup.ref('email'), null], 'Confirmação incorreta'),
-          profile_name: Yup.string().required('Nome de perfil obrigatório'),
+          profile_name: Yup.string()
+            .required('Nome de perfil obrigatório')
+            .matches(
+              /^[aA-zZ\s]+$/,
+              'Apenas alfabetos são permitidos para este campo',
+            ),
           password: Yup.string().min(6, 'No mínimo 6 digitos'),
         });
 

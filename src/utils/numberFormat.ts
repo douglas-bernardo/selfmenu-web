@@ -14,7 +14,7 @@ export const numberFormatAsCurrency = (value: number | bigint): string =>
     minimumFractionDigits: 2,
   }).format(value);
 
-export const priceToNumber = (value: string | undefined): number => {
+export const currencyFormatAsNumber = (value: string | undefined): number => {
   if (value) {
     return Number(
       value.replace(/(,|\.)([0-9]{3})/g, '$2').replace(/(,|\.)/, '.'),

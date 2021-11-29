@@ -4,7 +4,7 @@ import { Form as Unform } from '@unform/web';
 
 export const Main = styled.div`
   height: 100%;
-  overflow: auto;
+  /* overflow: auto; */
   padding: 30px;
   color: #3c3c3c;
   margin-top: 100px;

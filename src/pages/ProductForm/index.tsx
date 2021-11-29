@@ -23,7 +23,7 @@ import TextArea from '../../components/TextArea';
 import { Select } from '../../components/Select';
 import { api } from '../../services/api';
 import ToggleButton from '../../components/ToggleButton';
-import { numberFormat, priceToNumber } from '../../utils/numberFormat';
+import { numberFormat, currencyFormatAsNumber } from '../../utils/numberFormat';
 import { BreadCrumb } from '../../components/BreadCrumb';
 import { BreadCrumbItem } from '../../components/BreadCrumbItem';
 import { useToast } from '../../hooks/toast';
@@ -125,7 +125,12 @@ export const ProductForm: React.FC = () => {
         formRef.current?.setErrors({});
 
         const schema = Yup.object().shape({
-          name: Yup.string().required('Nome do produto é obrigatório'),
+          name: Yup.string()
+            .required('Nome do produto é obrigatório')
+            .matches(
+              /^[aA-zZ0-9\s]+$/,
+              'Apenas alfabetos são permitidos para este campo',
+            ),
           category_id: Yup.string().required('Categoria é obrigatória'),
           price_formatted: Yup.string().required('Preço é obrigatório'),
         });
@@ -136,7 +141,10 @@ export const ProductForm: React.FC = () => {
         formData.append('name', data.name);
         formData.append('description', data.description);
         formData.append('category_id', String(data.category_id));
-        formData.append('price', String(priceToNumber(data.price_formatted)));
+        formData.append(
+          'price',
+          String(currencyFormatAsNumber(data.price_formatted)),
+        );
         formData.append('quantity', String(data.quantity));
         formData.append('photo', image);
 
@@ -152,7 +160,7 @@ export const ProductForm: React.FC = () => {
           type: 'success',
           title: location.state?.product_id
             ? 'Dados atualizados com sucesso'
-            : 'Novo estabelecimento cadastrado com sucesso!',
+            : 'Produto cadastrado com sucesso!',
         });
 
         history.push('/products');

@@ -1,8 +1,9 @@
-import React, { useEffect, useState, useCallback } from 'react';
+import React, { useEffect, useState, useCallback, useMemo } from 'react';
 
 import ReactTooltip from 'react-tooltip';
 import { HiX } from 'react-icons/hi';
-import { RiMoneyDollarCircleLine } from 'react-icons/ri';
+import { RiCheckDoubleFill } from 'react-icons/ri';
+import { MdPayment } from 'react-icons/md';
 import { MdScreenLockPortrait } from 'react-icons/md';
 
 import { api } from '../../../services/api';
@@ -15,14 +16,20 @@ import {
   TableDetailsHeader,
   TableDetailsMain,
   OrderContainer,
+  OrderHeader,
+  OrderPaymentButton,
   CustomerName,
   OrderResume,
   TableDetailsFooter,
   TotalTable,
   PaymentButton,
+  OrderInfo,
+  TotalAmountPaid,
 } from './styles';
 import { useToast } from '../../../hooks/toast';
 import { ModalInfo } from '../../../components/ModalInfo';
+import { PaymentModal } from '../../../components/PaymentModal';
+import ModalConfirm from '../../../components/ModalConfirm';
 
 interface IWaiter {
   name: string;
@@ -48,6 +55,10 @@ interface IOrder {
   status_order_id: number;
   customer_name: string;
   order_products: IOrderProducts[];
+  status_order: {
+    id: number;
+    name: string;
+  };
 }
 
 interface ITable {
@@ -66,9 +77,12 @@ export interface IOrderResume {
   id: string;
   customer_name: string;
   items_quantity: number;
-  status_order_id: number;
   amount: number;
   amount_formatted: string;
+  status_order: {
+    id: number;
+    name: string;
+  };
 }
 
 interface TableDetailsProps {
@@ -91,12 +105,26 @@ export const TableDetails: React.FC<TableDetailsProps> = ({
 }) => {
   const [refresh, setRefresh] = useState(false);
   const { addToast } = useToast();
-  const [showModalSecurityCode, setShowModalSecurityCode] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
+
+  const [showModalSecurityCode, setShowModalSecurityCode] = useState(false);
+  const [showPaymentModal, setShowPaymentModal] = useState(false);
+  const [showConfirmCloseTableModal, setShowConfirmCloseTableModal] = useState(
+    false,
+  );
+
   const [table, setTable] = useState<ITable>();
-  const [total, setTotal] = useState('');
+  const [summary, setSummary] = useState({
+    paid: 0,
+    toPay: 0,
+  });
+
   const [securityCode, setSecurityCode] = useState('');
   const [ordersResume, setOrdersResume] = useState<IOrderResume[]>();
+
+  const [selectedOrder, setSelectedOrder] = useState<IOrderResume>(
+    {} as IOrderResume,
+  );
 
   useEffect(() => {
     if (table_id) {
@@ -124,17 +152,33 @@ export const TableDetails: React.FC<TableDetailsProps> = ({
               items_quantity: qtd,
               amount: amt.total,
               amount_formatted: numberFormatAsCurrency(amt.total),
-              status_order_id: order.status_order_id,
+              status_order: order.status_order,
             };
+          });
+
+          const summaryData = dataOrders.reduce(
+            (acc, item) => {
+              if (item.status_order.id === 6) {
+                acc.paid += item.amount;
+              } else {
+                acc.toPay += item.amount;
+              }
+
+              return acc;
+            },
+            {
+              paid: 0,
+              toPay: 0,
+            },
+          );
+
+          setSummary({
+            paid: summaryData.paid,
+            toPay: summaryData.toPay,
           });
 
           setOrdersResume(dataOrders);
           setRefresh(false);
-          const summary = dataOrders.reduce(
-            (acc, item) => acc + item.amount,
-            0,
-          );
-          setTotal(numberFormatAsCurrency(summary));
         })
         .catch(err => {
           console.log(err.message);
@@ -143,9 +187,21 @@ export const TableDetails: React.FC<TableDetailsProps> = ({
     setIsLoading(false);
   }, [table_id, refresh]);
 
+  const amountPaidAsCurrency = useMemo(() => {
+    return numberFormatAsCurrency(summary.paid);
+  }, [summary.paid]);
+
+  const amountToPayAsCurrency = useMemo(() => {
+    return numberFormatAsCurrency(summary.toPay);
+  }, [summary.toPay]);
+
   const toggleModalSecurity = useCallback(() => {
     setShowModalSecurityCode(!showModalSecurityCode);
   }, [showModalSecurityCode]);
+
+  const togglePaymentModal = useCallback(() => {
+    setShowPaymentModal(!showPaymentModal);
+  }, [showPaymentModal]);
 
   const handleGenerateSecurityCode = useCallback(() => {
     if (table) {
@@ -172,6 +228,61 @@ export const TableDetails: React.FC<TableDetailsProps> = ({
     }
   }, [table, addToast, toggleModalSecurity, handleRefreshTables]);
 
+  const handleRegisterPayment = useCallback(async (order_id: string) => {
+    await api.patch(`/orders/${order_id}/update-status`, {
+      status_order_id: 6,
+    });
+    setRefresh(true);
+  }, []);
+
+  const handleRegisterOrderPayment = useCallback(
+    (data: IOrderResume) => {
+      setSelectedOrder(data);
+      togglePaymentModal();
+    },
+    [togglePaymentModal],
+  );
+
+  const toggleCloseTableModal = useCallback(() => {
+    setShowConfirmCloseTableModal(!showConfirmCloseTableModal);
+  }, [showConfirmCloseTableModal]);
+
+  const handleCloseTable = useCallback(() => {
+    if (table_id) {
+      api
+        .patch(`/tables/${table_id}/close`)
+        .then(() => {
+          handleRefreshTables();
+          setRefresh(true);
+          addToast({
+            type: 'success',
+            title: 'Mesa finalizada e disponível novamente!',
+          });
+        })
+        .catch(err => {
+          addToast({
+            type: 'error',
+            title: 'Não Permitido',
+            description: err.response.data.message
+              ? err.response.data.message
+              : 'Erro na solicitação',
+          });
+        });
+    }
+  }, [addToast, table_id, handleRefreshTables]);
+
+  const handleConfirmCloseTable = useCallback(() => {
+    if (summary.toPay > 0) {
+      addToast({
+        type: 'error',
+        title: 'Não Permitido',
+        description: 'Existem pedidos em andamento ou pendentes de pagamento',
+      });
+      return;
+    }
+    toggleCloseTableModal();
+  }, [summary.toPay, addToast, toggleCloseTableModal]);
+
   return (
     <Container is_show={isOpen}>
       <ModalInfo
@@ -179,6 +290,27 @@ export const TableDetails: React.FC<TableDetailsProps> = ({
         message={`MESA: ${table?.number} | CÓDIGO DE SEGURANÇA: ${securityCode}`}
         isOpen={showModalSecurityCode}
         setIsOpen={toggleModalSecurity}
+      />
+      <PaymentModal
+        order={selectedOrder}
+        isOpen={showPaymentModal}
+        setIsOpen={togglePaymentModal}
+        handlePaymentRegister={handleRegisterPayment}
+      />
+
+      <ModalConfirm
+        title="Fechamento de Mesa"
+        message="Confirma fechamento da mesa?"
+        isOpen={showConfirmCloseTableModal}
+        setIsOpen={toggleCloseTableModal}
+        handleConfirmYes={handleCloseTable}
+        confirmNo="Cancelar"
+        confirmYes="Confirmar"
+        buttonType={{
+          theme: {
+            confirmYes: 'success_light',
+          },
+        }}
       />
       <TableDetailsContent>
         <TableDetailsHeader>
@@ -218,30 +350,70 @@ export const TableDetails: React.FC<TableDetailsProps> = ({
           {ordersResume &&
             ordersResume.map(item => (
               <OrderContainer key={item.id}>
-                <CustomerName>{item.customer_name}</CustomerName>
+                <OrderHeader>
+                  <CustomerName>{item.customer_name}</CustomerName>
+
+                  {(item.status_order.id === 4 ||
+                    item.status_order.id === 5) && (
+                    <>
+                      <OrderPaymentButton
+                        data-tip
+                        data-for="regPayment"
+                        onClick={() => handleRegisterOrderPayment(item)}
+                      >
+                        <MdPayment size={20} />
+                      </OrderPaymentButton>
+
+                      <ReactTooltip
+                        id="regPayment"
+                        type="success"
+                        effect="solid"
+                        delayShow={500}
+                      >
+                        <span>Registrar Pagamento</span>
+                      </ReactTooltip>
+                    </>
+                  )}
+                </OrderHeader>
                 <OrderResume>
-                  <small>
-                    {(item.status_order_id === 7 && (
-                      <small className="orderCanceled">Cancelado</small>
-                    )) ||
-                      (item.items_quantity === 1
-                        ? `${item.items_quantity} Item`
-                        : `${item.items_quantity} Itens`)}
+                  <small
+                    className={`order${
+                      item.status_order.id === 7 ? ' canceled' : ''
+                    }`}
+                  >
+                    {item.status_order.name}
                   </small>
-                  <small>{item.amount_formatted}</small>
+                  <OrderInfo>
+                    {item.status_order.id !== 7 && (
+                      <small>
+                        {item.items_quantity === 1
+                          ? `${item.items_quantity}Item |`
+                          : `${item.items_quantity}Itens |`}
+                      </small>
+                    )}
+                    <small>{item.amount_formatted}</small>
+                  </OrderInfo>
                 </OrderResume>
               </OrderContainer>
             ))}
         </TableDetailsMain>
         <TableDetailsFooter>
-          <TotalTable>
-            <span>Total:</span>
-            <h2>{total}</h2>
-          </TotalTable>
-          <PaymentButton>
-            <RiMoneyDollarCircleLine size={30} />
-            PAGAMENTO
-          </PaymentButton>
+          {ordersResume && ordersResume?.length > 0 && (
+            <>
+              <TotalAmountPaid>
+                <span>Total pago:</span>
+                <h3>{amountPaidAsCurrency}</h3>
+              </TotalAmountPaid>
+              <TotalTable>
+                <span>Total à pagar:</span>
+                <h2>{amountToPayAsCurrency}</h2>
+              </TotalTable>
+              <PaymentButton onClick={handleConfirmCloseTable}>
+                <RiCheckDoubleFill size={30} />
+                Encerrar Mesa
+              </PaymentButton>
+            </>
+          )}
         </TableDetailsFooter>
       </TableDetailsContent>
     </Container>

@@ -23,7 +23,6 @@ import { Waiters } from '../pages/Waiters';
 import { WaiterForm } from '../pages/WaiterForm';
 import { Tables } from '../pages/Tables';
 import { TableForm } from '../pages/TableForm';
-import { TableDetails } from '../pages/TableDetails';
 
 const Routes: React.FC = () => (
   <Switch>
@@ -44,7 +43,6 @@ const Routes: React.FC = () => (
 
     <Route path="/tables" exact component={Tables} isPrivate />
     <Route path="/tables/new" exact component={TableForm} isPrivate />
-    <Route path="/tables/:id" exact component={TableDetails} isPrivate />
 
     <Route path="/feedbacks" component={Feedbacks} isPrivate />
 

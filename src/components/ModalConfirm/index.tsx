@@ -1,7 +1,7 @@
 import React, { useCallback } from 'react';
 import Modal from '../Modal';
 
-import { Container } from './styles';
+import { ButtonsProps, Container } from './styles';
 
 interface ConfirmModalProps {
   title?: string;
@@ -11,6 +11,7 @@ interface ConfirmModalProps {
   isOpen: boolean;
   setIsOpen: () => void;
   handleConfirmYes: () => void;
+  buttonType?: ButtonsProps;
 }
 
 const ModalConfirm: React.FC<ConfirmModalProps> = ({
@@ -21,18 +22,25 @@ const ModalConfirm: React.FC<ConfirmModalProps> = ({
   confirmYes,
   confirmNo,
   handleConfirmYes,
+  buttonType,
 }) => {
   const handleConfimYes = useCallback(() => {
     handleConfirmYes();
-  }, [handleConfirmYes]);
+    setIsOpen();
+  }, [handleConfirmYes, setIsOpen]);
 
-  const handleConfimNo = useCallback(() => {
+  const handleConfirmNo = useCallback(() => {
     setIsOpen();
   }, [setIsOpen]);
 
   return (
-    <Modal isOpen={isOpen} setIsOpen={setIsOpen} width="500px">
-      <Container>
+    <Modal
+      isOpen={isOpen}
+      setIsOpen={setIsOpen}
+      width="500px"
+      shouldCloseOnOverlayClick={false}
+    >
+      <Container buttonType={buttonType}>
         <header>
           <h3>{title || 'Action'}</h3>
         </header>
@@ -47,7 +55,7 @@ const ModalConfirm: React.FC<ConfirmModalProps> = ({
           >
             {confirmYes || 'Yes'}
           </button>
-          <button className="confirmNo" type="button" onClick={handleConfimNo}>
+          <button className="confirmNo" type="button" onClick={handleConfirmNo}>
             {confirmNo || 'No'}
           </button>
         </footer>

@@ -39,7 +39,7 @@ export const TableContent = styled.div<TableContentProps>`
   ${props =>
     props.withdrawn &&
     css`
-      margin-right: 350px;
+      margin-right: 340px;
     `}
 `;
 

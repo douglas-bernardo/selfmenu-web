@@ -21,7 +21,7 @@ interface PropIcons {
 const icons: PropIcons = {
   1: <FaFire size={30} />,
   2: <IoFastFoodOutline size={30} />,
-  3: <FiSend size={30} color="#02c697" />,
+  3: <FiSend size={30} />,
 };
 
 interface IOrder {
@@ -59,7 +59,6 @@ interface OrderItemProps {
 export const OrderItems: React.FC<OrderItemProps> = ({
   orders,
   tooltip_text,
-  tooltip_theme,
   handleOrderStatus,
 }) => {
   return (
@@ -79,7 +78,7 @@ export const OrderItems: React.FC<OrderItemProps> = ({
             </ActionOrderButton>
             <ReactTooltip
               id={tooltip_text}
-              type={tooltip_theme || 'info'}
+              type="info"
               effect="solid"
               delayShow={1000}
             >

@@ -109,6 +109,19 @@ export const TableDetailsFooter = styled.div`
   justify-content: center;
 `;
 
+export const TotalAmountPaid = styled.div`
+  display: flex;
+  width: 100%;
+  align-items: center;
+  justify-content: space-between;
+  height: 50px;
+  padding: 0 10px;
+  color: #02c697;
+  span {
+    font-size: 20px;
+  }
+`;
+
 export const TotalTable = styled.div`
   display: flex;
   width: 100%;
@@ -118,7 +131,7 @@ export const TotalTable = styled.div`
   padding: 0 10px;
 
   span {
-    font-size: 28px;
+    font-size: 25px;
   }
 `;
 export const PaymentButton = styled.button`
@@ -130,7 +143,7 @@ export const PaymentButton = styled.button`
   justify-content: center;
 
   color: #fff;
-  background: #02c697;
+  background: #ff9000;
   border: 0;
 
   font-weight: bold;
@@ -140,7 +153,7 @@ export const PaymentButton = styled.button`
   }
 
   &:hover {
-    background: ${shade(0.2, '#02c697')};
+    background: ${shade(0.2, '#ff9000')};
   }
 `;
 
@@ -157,8 +170,26 @@ export const OrderContainer = styled.div`
   margin-bottom: 5px;
 `;
 
+export const OrderHeader = styled.div`
+  display: flex;
+  justify-content: space-between;
+`;
+
 export const CustomerName = styled.div`
   flex: 1;
+`;
+
+export const OrderPaymentButton = styled.button`
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  color: #02c697;
+  background: transparent;
+  border: 0;
+  &:hover {
+    color: ${shade(0.2, '#02c697')};
+  }
 `;
 
 export const OrderResume = styled.div`
@@ -169,7 +200,19 @@ export const OrderResume = styled.div`
 
   padding: 5px 0;
 
-  small.orderCanceled {
+  small.order.canceled {
     color: #c53030;
   }
+
+  small.order {
+    color: #3c3c3c;
+  }
+`;
+
+export const OrderInfo = styled.div`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  gap: 5px;
 `;

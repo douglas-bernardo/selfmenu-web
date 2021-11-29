@@ -2,15 +2,14 @@ import styled from 'styled-components';
 import { Form as Unform } from '@unform/web';
 
 export const Form = styled(Unform)`
-  padding: 50px;
+  padding: 30px;
   display: flex;
   flex-direction: column;
 
-  h1 {
+  h3 {
     font-weight: 600;
-    font-size: 36px;
-    line-height: 36px;
-    margin-bottom: 40px;
+    font-size: 26px;
+    line-height: 26px;
   }
 
   div {
@@ -36,13 +35,15 @@ export const Form = styled(Unform)`
   div.row div {
     /* width: 250px; */
     :not(:last-child) {
-      margin-right: 20px;
+      /* margin-right: 20px; */
     }
   }
 
   div.label {
     margin-right: 30px;
-    min-width: 75px;
+    min-width: 115px;
+
+    font-weight: bold;
   }
 
   button {
@@ -73,34 +74,41 @@ export const Form = styled(Unform)`
 `;
 
 export const ImageContainer = styled.div`
+  position: relative;
+  display: flex;
+  align-self: center;
   /* display: grid;
   grid-template-columns: repeat(5, 1fr);
   grid-gap: 16px; */
-  display: flex;
+  /* display: flex;
   flex-wrap: wrap;
   align-items: center;
-  justify-content: start;
-
-  img {
-    width: 95px;
-    height: 95px;
-    object-fit: cover;
-    border-radius: 20px;
-    margin-right: 10px;
-    margin-bottom: 10px;
-  }
+  justify-content: start; */
 
   label.new-image {
+    /* position: absolute; */
     height: 95px;
     width: 95px;
+    border-radius: 20px;
+
+    right: 0;
+    bottom: 0;
+    border: 0;
+
     background: #f5f8fa;
     border: 1px dashed #96d2f0;
-    border-radius: 20px;
     cursor: pointer;
 
     display: flex;
     justify-content: center;
     align-items: center;
+
+    img {
+      width: 95px;
+      height: 95px;
+      object-fit: cover;
+      border-radius: 20px;
+    }
   }
 
   input[type='file'] {
