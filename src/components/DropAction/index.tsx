@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
 import React, { useCallback, useRef, useState } from 'react';
 import { FaTrashAlt, FaEdit } from 'react-icons/fa';
 import { BiDotsVertical } from 'react-icons/bi';

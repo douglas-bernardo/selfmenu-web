@@ -1,5 +1,5 @@
 import React from 'react';
-import { NavLink } from 'react-router-dom';
+import { Link, NavLink } from 'react-router-dom';
 import { FaChartLine, FaSignOutAlt } from 'react-icons/fa';
 import { IoFastFood } from 'react-icons/io5';
 import { GiTable } from 'react-icons/gi';
@@ -33,7 +33,9 @@ export const Sidebar: React.FC = () => {
   const { signOut } = useAuth();
   return (
     <Aside>
-      <img src={selfmenuLogo} className="logo" alt="logo" />
+      <Link to="/">
+        <img src={selfmenuLogo} className="logo" alt="logo" />
+      </Link>
       <ul>
         {pages.map(({ label, page, icon }) => (
           <li key={page}>

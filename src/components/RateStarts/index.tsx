@@ -1,5 +1,5 @@
-/* eslint-disable react/no-array-index-key */
 import React, { useEffect, useState } from 'react';
+import { v4 as uuid } from 'uuid';
 import { AiFillStar } from 'react-icons/ai';
 
 interface RateStartsProps {
@@ -25,9 +25,9 @@ const RateStarts: React.FC<RateStartsProps> = ({ stars }) => {
   return (
     <div>
       {starsNumber &&
-        starsNumber.map((item, index) => (
+        starsNumber.map(item => (
           <AiFillStar
-            key={index}
+            key={uuid()}
             style={{ color: item === 'selected' ? '#feb906' : '#a3a3a3' }}
           />
         ))}
