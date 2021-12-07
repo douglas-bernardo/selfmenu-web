@@ -24,14 +24,7 @@ export const Content = styled.div`
   justify-content: center;
   align-items: center;
 
-  svg {
-    width: 25px;
-    height: 25px;
-    margin-right: 30px;
-    cursor: pointer;
-  }
-
-  button {
+  button.dropAccountInfo {
     position: relative;
     display: flex;
     height: 56px;
@@ -49,6 +42,13 @@ export const Content = styled.div`
       border-radius: 50%;
       margin-left: 4px;
     }
+
+    svg.open-drop {
+      width: 25px;
+      height: 25px;
+      margin-right: 20px;
+      cursor: pointer;
+    }
   }
 `;
 
@@ -65,7 +65,7 @@ export const DropdownMenuContent = styled.div<DropdownMenuProps>`
   box-shadow: rgb(0 0 0 / 40%) 4px 4px 4px 2px;
   transition: opacity 0.2s ease 0s, visibility 0.2s ease 0s;
   opacity: 1;
-  z-index: 1;
+  z-index: 9;
 
   ${props =>
     props.isVisible

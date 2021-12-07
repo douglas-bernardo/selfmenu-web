@@ -41,6 +41,7 @@ export const AuthProvider: React.FC = ({ children }) => {
     const account = localStorage.getItem('@selfmenu:account');
 
     if (token && account) {
+      console.log(JSON.parse(account));
       api.defaults.headers.authorization = `Bearer ${token}`;
       return { token, account: JSON.parse(account) };
     }
@@ -62,6 +63,7 @@ export const AuthProvider: React.FC = ({ children }) => {
     api.defaults.headers.authorization = `Bearer ${token}`;
 
     setData({ token, account });
+    console.log(account);
   }, []);
 
   const signOut = useCallback(() => {

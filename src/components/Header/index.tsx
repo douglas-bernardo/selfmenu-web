@@ -1,5 +1,5 @@
 import React, { useCallback } from 'react';
-import { FaBell, FaAngleDown, FaUser, FaPowerOff } from 'react-icons/fa';
+import { FaAngleDown, FaUser, FaPowerOff } from 'react-icons/fa';
 
 import { Link } from 'react-router-dom';
 import { OutSideClick } from '../../hooks/outSideClick';
@@ -14,6 +14,7 @@ import {
   DropdownMenu,
   DropdownMenuContent,
 } from './styles';
+import { Notifications } from '../Notifications';
 
 export const Header: React.FC = ({ children }) => {
   const { account, signOut } = useAuth();
@@ -27,13 +28,16 @@ export const Header: React.FC = ({ children }) => {
     <Container>
       <div>{children}</div>
       <Content>
-        <FaBell title="Notificações" />
-
+        <Notifications />
         <DropdownMenu ref={ref}>
-          <button type="button" onClick={handleClickButton}>
+          <button
+            className="dropAccountInfo"
+            type="button"
+            onClick={handleClickButton}
+          >
             <img src={account.avatar_url || defaultAvatar} alt="User Logo" />
             <span>{account.profile_name}</span>
-            <FaAngleDown />
+            <FaAngleDown className="open-drop" />
 
             <DropdownMenuContent isVisible={visible}>
               <Link to="/account">

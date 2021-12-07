@@ -20,13 +20,13 @@ interface Page {
 }
 
 const pages: Array<Page> = [
-  { page: '/dashboard', label: 'Dashboard', icon: <FaChartLine /> },
-  { page: '/orders', label: 'Pedidos', icon: <IoFastFood /> },
+  // { page: '/dashboard', label: 'Dashboard', icon: <FaChartLine /> },
+  // { page: '/orders', label: 'Pedidos', icon: <IoFastFood /> },
   { page: '/categories', label: 'Categorias', icon: <IoTicketOutline /> },
   { page: '/products', label: 'Produtos', icon: <BiFoodMenu /> },
-  { page: '/tables', label: 'Mesas', icon: <GiTable /> },
+  // { page: '/tables', label: 'Mesas', icon: <GiTable /> },
   // { page: '/feedbacks', label: 'Feedbacks', icon: <FaComments /> },
-  { page: '/settings', label: 'Configurações', icon: <FiSettings /> },
+  // { page: '/settings', label: 'Configurações', icon: <FiSettings /> },
 ];
 
 export const Sidebar: React.FC = () => {
