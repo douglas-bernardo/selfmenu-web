@@ -172,6 +172,7 @@ export const Orders: React.FC = () => {
 
   const handleSendOrderToPreparation = useCallback(
     (order_id: string) => {
+      setIsLoading(true);
       updateOrderStatus(order_id, 2);
     },
     [updateOrderStatus],
@@ -180,6 +181,15 @@ export const Orders: React.FC = () => {
   const handleSetOrderAsDone = useCallback(
     (order_id: string) => {
       updateOrderStatus(order_id, 3);
+      setIsLoading(true);
+    },
+    [updateOrderStatus],
+  );
+
+  const handleBackToQueue = useCallback(
+    (order_id: string) => {
+      setIsLoading(true);
+      updateOrderStatus(order_id, 1);
     },
     [updateOrderStatus],
   );
@@ -187,8 +197,13 @@ export const Orders: React.FC = () => {
   const handleSendOrderToCustomer = useCallback(
     (order_id: string) => {
       updateOrderStatus(order_id, 4);
+
+      addToast({
+        type: 'success',
+        title: 'Pedido enviado ao cliente',
+      });
     },
-    [updateOrderStatus],
+    [updateOrderStatus, addToast],
   );
 
   const toggleScreenSelected = useCallback(() => {
@@ -203,86 +218,86 @@ export const Orders: React.FC = () => {
           <h1 className="pageTitle">Pedidos</h1>
         </Header>
         <Main>
-          {isLoading ? (
-            <Loading />
-          ) : (
-            <>
-              <MainHeaderControls>
-                <Select
-                  onChange={handleSelectEstablishment}
-                  options={establishmentOptions}
-                  placeholder="Selecione o estabelecimento"
-                  styles={selectCustomStyles}
-                  defaultValue={establishmentSelected}
-                />
+          <MainHeaderControls>
+            <Select
+              onChange={handleSelectEstablishment}
+              options={establishmentOptions}
+              placeholder="Selecione o estabelecimento"
+              styles={selectCustomStyles}
+              defaultValue={establishmentSelected}
+            />
 
-                <ToggleScreenOrdersContainer>
-                  <InProgressButton
-                    type="button"
-                    onClick={toggleScreenSelected}
-                    isSelected={!isSelected}
-                    disabled={!isSelected}
-                  >
-                    <FaRegClock />
-                    Preparando
-                  </InProgressButton>
-                  <DoneButton
-                    type="button"
-                    onClick={toggleScreenSelected}
-                    isSelected={isSelected}
-                    disabled={isSelected}
-                  >
-                    <IoFastFood />
-                    Finalizados
-                  </DoneButton>
-                </ToggleScreenOrdersContainer>
-              </MainHeaderControls>
-              <OrdersContent>
-                {isSelected ? (
-                  <DoneOrders>
-                    <DoneOrdersHeader>Finalizados</DoneOrdersHeader>
+            <ToggleScreenOrdersContainer>
+              <InProgressButton
+                type="button"
+                onClick={toggleScreenSelected}
+                isSelected={!isSelected}
+                disabled={!isSelected}
+              >
+                <FaRegClock />
+                Preparando
+              </InProgressButton>
+              <DoneButton
+                type="button"
+                onClick={toggleScreenSelected}
+                isSelected={isSelected}
+                disabled={isSelected}
+              >
+                <IoFastFood />
+                Finalizados
+              </DoneButton>
+            </ToggleScreenOrdersContainer>
+          </MainHeaderControls>
+          <OrdersContent>
+            {isSelected ? (
+              <DoneOrders>
+                <DoneOrdersHeader>Finalizados</DoneOrdersHeader>
+                <OrdersContainer>
+                  <OrderItems
+                    orders={doneOrders}
+                    tooltip_text="Enviar ao cliente"
+                    tooltip_theme="success"
+                    handleOrderStatus={handleSendOrderToCustomer}
+                  />
+                </OrdersContainer>
+              </DoneOrders>
+            ) : (
+              <>
+                <BackOrders>
+                  <BackOrdersHeader>Em espera</BackOrdersHeader>
+                  {isLoading ? (
+                    <Loading />
+                  ) : (
                     <OrdersContainer>
                       <OrderItems
-                        orders={doneOrders}
-                        tooltip_text="Enviar ao cliente"
-                        tooltip_theme="success"
-                        handleOrderStatus={handleSendOrderToCustomer}
+                        orders={backOrders}
+                        tooltip_text="Preparar"
+                        handleOrderStatus={handleSendOrderToPreparation}
                       />
                     </OrdersContainer>
-                  </DoneOrders>
-                ) : (
-                  <>
-                    <BackOrders>
-                      <BackOrdersHeader>Em espera</BackOrdersHeader>
-                      <OrdersContainer>
-                        <OrderItems
-                          orders={backOrders}
-                          tooltip_text="Preparar"
-                          handleOrderStatus={handleSendOrderToPreparation}
-                        />
-                      </OrdersContainer>
-                    </BackOrders>
+                  )}
+                </BackOrders>
 
-                    <div className="divider" />
+                <div className="divider" />
 
-                    <InProcessOrders>
-                      <InProcessOrdersHeader>
-                        Em Preparação
-                      </InProcessOrdersHeader>
-
-                      <OrdersContainer>
-                        <OrderItems
-                          orders={inProcessOrders}
-                          tooltip_text="Mover p/ Pronto"
-                          handleOrderStatus={handleSetOrderAsDone}
-                        />
-                      </OrdersContainer>
-                    </InProcessOrders>
-                  </>
-                )}
-              </OrdersContent>
-            </>
-          )}
+                <InProcessOrders>
+                  <InProcessOrdersHeader>Em Preparação</InProcessOrdersHeader>
+                  {isLoading ? (
+                    <Loading />
+                  ) : (
+                    <OrdersContainer>
+                      <OrderItems
+                        orders={inProcessOrders}
+                        tooltip_text="Mover p/ Pronto"
+                        handleOrderStatus={handleSetOrderAsDone}
+                        handleRevertStatus={handleBackToQueue}
+                      />
+                    </OrdersContainer>
+                  )}
+                </InProcessOrders>
+              </>
+            )}
+          </OrdersContent>
         </Main>
       </Content>
     </Container>

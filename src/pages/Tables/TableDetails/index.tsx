@@ -5,6 +5,7 @@ import { HiX } from 'react-icons/hi';
 import { RiCheckDoubleFill } from 'react-icons/ri';
 import { MdPayment } from 'react-icons/md';
 import { MdScreenLockPortrait } from 'react-icons/md';
+import { AiOutlineInteraction } from 'react-icons/ai';
 
 import { api } from '../../../services/api';
 import { numberFormatAsCurrency } from '../../../utils/numberFormat';
@@ -283,6 +284,38 @@ export const TableDetails: React.FC<TableDetailsProps> = ({
     toggleCloseTableModal();
   }, [summary.toPay, addToast, toggleCloseTableModal]);
 
+  const handleSetTableFree = useCallback(() => {
+    if (summary.toPay > 0) {
+      addToast({
+        type: 'error',
+        title: 'Não Permitido',
+        description: 'Existem pedidos em andamento ou pendentes de pagamento',
+      });
+      return;
+    }
+    if (table_id) {
+      api
+        .patch(`/tables/${table_id}/close`)
+        .then(() => {
+          handleRefreshTables();
+          setRefresh(true);
+          addToast({
+            type: 'success',
+            title: 'Mesa disponível novamente!',
+          });
+        })
+        .catch(err => {
+          addToast({
+            type: 'error',
+            title: 'Não Permitido',
+            description: err.response.data.message
+              ? err.response.data.message
+              : 'Erro na solicitação',
+          });
+        });
+    }
+  }, [table_id, summary.toPay, addToast, handleRefreshTables]);
+
   return (
     <Container is_show={isOpen}>
       <ModalInfo
@@ -339,8 +372,31 @@ export const TableDetails: React.FC<TableDetailsProps> = ({
                 </ReactTooltip>
               </>
             )}
+
+            <button
+              data-tip
+              data-for="setFreeTable"
+              className="setFreeTable"
+              type="button"
+              disabled={table?.status_table_id === 1}
+              style={{
+                cursor:
+                  table?.status_table_id === 1 ? 'not-allowed' : 'pointer',
+              }}
+              onClick={handleSetTableFree}
+            >
+              <AiOutlineInteraction size={25} color="#12A454" />
+            </button>
+            <ReactTooltip
+              id="setFreeTable"
+              type="success"
+              effect="solid"
+              delayShow={500}
+            >
+              <span>Liberar Mesa</span>
+            </ReactTooltip>
             <button className="close" type="button" onClick={setIsOpen}>
-              <HiX size={25} color="#3c3c3c" />
+              <HiX size={25} color="#969CB2" />
             </button>
           </div>
         </TableDetailsHeader>

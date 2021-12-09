@@ -23,6 +23,18 @@ export const OrderHeader = styled.header`
   align-items: center;
 
   margin-bottom: 15px;
+
+  div.controls {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    gap: 15px;
+
+    svg.back {
+      padding-top: 2px;
+    }
+  }
 `;
 
 export const ActionOrderButton = styled.button`

@@ -1,7 +1,5 @@
 import React, { useState, useCallback, useEffect, useMemo } from 'react';
 
-// import io from 'socket.io-client';
-
 import { parseISO, formatDistance } from 'date-fns';
 import pt from 'date-fns/locale/pt-BR';
 
@@ -28,14 +26,6 @@ interface INotification {
   timeDistance: string;
 }
 
-// const notificationsQueue: INotification[] = [];
-
-// const socket = io(process.env.REACT_APP_API_URL || '');
-
-// socket.on('new_order', newOrder => {
-//   notificationsQueue.push(newOrder);
-// });
-
 export const Notifications: React.FC = () => {
   const [visible, setVisible] = useState(false);
   const [notifications, setNotifications] = useState<INotification[]>([]);
@@ -43,22 +33,6 @@ export const Notifications: React.FC = () => {
   const hasUnread = useMemo(() => {
     return notifications.some(notification => notification.read === false);
   }, [notifications]);
-
-  // useEffect(() => {
-  //   const timer = setInterval(() => {
-  //     if (notificationsQueue.length > 0) {
-  //       setNotifications(prevState =>
-  //         [notificationsQueue[0], ...prevState].filter(Boolean),
-  //       );
-  //       console.log(notificationsQueue[0]);
-  //       notificationsQueue.shift();
-  //     }
-  //   }, 3000);
-
-  //   return () => clearInterval(timer);
-  // }, []);
-
-  // teste
 
   function loadNotifications() {
     api
@@ -88,13 +62,13 @@ export const Notifications: React.FC = () => {
     loadNotifications();
   }, []);
 
-  // useEffect(() => {
-  //   const timer = setInterval(() => {
-  //     loadNotifications();
-  //   }, 3000);
+  useEffect(() => {
+    const timer = setInterval(() => {
+      loadNotifications();
+    }, 5000);
 
-  //   return () => clearInterval(timer);
-  // }, []);
+    return () => clearInterval(timer);
+  }, []);
 
   const handleToggleVisible = useCallback(() => {
     setVisible(!visible);

@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useRef } from 'react';
+import React, { useCallback, useEffect, useRef, useState } from 'react';
 import { FiMail, FiLock, FiLogIn } from 'react-icons/fi';
 import { FormHandles } from '@unform/core';
 import { Form } from '@unform/web';
@@ -23,6 +23,8 @@ interface SingInFormData {
 }
 
 export const SignIn: React.FC = () => {
+  const [isLoading, setIsLoading] = useState(false);
+
   const formRef = useRef<FormHandles>(null);
   const history = useHistory();
   const { signIn } = useAuth();
@@ -54,11 +56,14 @@ export const SignIn: React.FC = () => {
 
         await schema.validate(data, { abortEarly: false });
 
+        setIsLoading(true);
+
         await signIn({
           email: data.email,
           password: data.password,
         });
 
+        setIsLoading(false);
         history.push('/products');
       } catch (err) {
         if (err instanceof Yup.ValidationError) {
@@ -66,6 +71,8 @@ export const SignIn: React.FC = () => {
           formRef.current?.setErrors(errors);
           return;
         }
+
+        setIsLoading(false);
         addToast({
           type: 'error',
           title: 'Erro na autenticação',
@@ -93,7 +100,13 @@ export const SignIn: React.FC = () => {
               placeholder="Senha"
             />
 
-            <Button type="submit">Entrar</Button>
+            <Button
+              type="submit"
+              loading={isLoading}
+              text_loading="Acessando..."
+            >
+              Entrar
+            </Button>
 
             <Link to="forgot-password">Esqueci minha senha</Link>
           </Form>

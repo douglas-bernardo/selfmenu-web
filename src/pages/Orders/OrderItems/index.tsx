@@ -3,6 +3,7 @@ import ReactTooltip from 'react-tooltip';
 import { FaFire } from 'react-icons/fa';
 import { IoFastFoodOutline } from 'react-icons/io5';
 import { FiSend } from 'react-icons/fi';
+import { BsArrowCounterclockwise } from 'react-icons/bs';
 
 import {
   Container,
@@ -54,12 +55,14 @@ interface OrderItemProps {
   tooltip_text: string;
   tooltip_theme?: 'dark' | 'error' | 'info' | 'light' | 'success' | 'warning';
   handleOrderStatus: (order_id: string) => void;
+  handleRevertStatus?: (order_id: string) => void;
 }
 
 export const OrderItems: React.FC<OrderItemProps> = ({
   orders,
   tooltip_text,
   handleOrderStatus,
+  handleRevertStatus,
 }) => {
   return (
     <Container>
@@ -68,22 +71,46 @@ export const OrderItems: React.FC<OrderItemProps> = ({
           <OrderHeader>
             <h4>{`Cliente: ${order.customer_name} | Mesa: ${order.table.number}`}</h4>
 
-            <ActionOrderButton
-              type="button"
-              data-tip
-              data-for={tooltip_text}
-              onClick={() => handleOrderStatus(order.id)}
-            >
-              {icons[order.status_order_id]}
-            </ActionOrderButton>
-            <ReactTooltip
-              id={tooltip_text}
-              type="info"
-              effect="solid"
-              delayShow={1000}
-            >
-              <span>{tooltip_text}</span>
-            </ReactTooltip>
+            <div className="controls">
+              {order.status_order_id === 2 &&
+                typeof handleRevertStatus === 'function' && (
+                  <>
+                    <ActionOrderButton
+                      type="button"
+                      data-tip
+                      data-for="backOrder"
+                      onClick={() => handleRevertStatus(order.id)}
+                    >
+                      <BsArrowCounterclockwise className="back" size={30} />
+                    </ActionOrderButton>
+                    <ReactTooltip
+                      id="backOrder"
+                      type="info"
+                      effect="solid"
+                      delayShow={1000}
+                    >
+                      <span>Voltar para fila</span>
+                    </ReactTooltip>
+                  </>
+                )}
+
+              <ActionOrderButton
+                type="button"
+                data-tip
+                data-for={tooltip_text}
+                onClick={() => handleOrderStatus(order.id)}
+              >
+                {icons[order.status_order_id]}
+              </ActionOrderButton>
+              <ReactTooltip
+                id={tooltip_text}
+                type="info"
+                effect="solid"
+                delayShow={1000}
+              >
+                <span>{tooltip_text}</span>
+              </ReactTooltip>
+            </div>
           </OrderHeader>
           <OrderItemsContainer>
             {order.order_products.map(item => (

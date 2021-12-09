@@ -70,6 +70,11 @@ export const TableDetailsHeader = styled.div`
     background: transparent;
     border: 0;
   }
+
+  button.setFreeTable {
+    background: transparent;
+    border: 0;
+  }
 `;
 
 export const TableDetailsMain = styled.div`
