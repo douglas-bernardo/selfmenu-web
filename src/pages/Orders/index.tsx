@@ -220,34 +220,36 @@ export const Orders: React.FC = () => {
         <Main>
           <MainHeaderControls>
             {!isLoading && (
-              <Select
-                onChange={handleSelectEstablishment}
-                options={establishmentOptions}
-                placeholder="Selecione o estabelecimento"
-                styles={selectCustomStyles}
-                defaultValue={establishmentSelected}
-              />
+              <>
+                <Select
+                  onChange={handleSelectEstablishment}
+                  options={establishmentOptions}
+                  placeholder="Selecione o estabelecimento"
+                  styles={selectCustomStyles}
+                  defaultValue={establishmentSelected}
+                />
+                <ToggleScreenOrdersContainer>
+                  <InProgressButton
+                    type="button"
+                    onClick={toggleScreenSelected}
+                    isSelected={!isSelected}
+                    disabled={!isSelected}
+                  >
+                    <FaRegClock />
+                    Preparando
+                  </InProgressButton>
+                  <DoneButton
+                    type="button"
+                    onClick={toggleScreenSelected}
+                    isSelected={isSelected}
+                    disabled={isSelected}
+                  >
+                    <IoFastFood />
+                    Finalizados
+                  </DoneButton>
+                </ToggleScreenOrdersContainer>
+              </>
             )}
-            <ToggleScreenOrdersContainer>
-              <InProgressButton
-                type="button"
-                onClick={toggleScreenSelected}
-                isSelected={!isSelected}
-                disabled={!isSelected}
-              >
-                <FaRegClock />
-                Preparando
-              </InProgressButton>
-              <DoneButton
-                type="button"
-                onClick={toggleScreenSelected}
-                isSelected={isSelected}
-                disabled={isSelected}
-              >
-                <IoFastFood />
-                Finalizados
-              </DoneButton>
-            </ToggleScreenOrdersContainer>
           </MainHeaderControls>
           <OrdersContent>
             {isSelected ? (
