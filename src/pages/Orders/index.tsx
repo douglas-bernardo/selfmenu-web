@@ -219,14 +219,15 @@ export const Orders: React.FC = () => {
         </Header>
         <Main>
           <MainHeaderControls>
-            <Select
-              onChange={handleSelectEstablishment}
-              options={establishmentOptions}
-              placeholder="Selecione o estabelecimento"
-              styles={selectCustomStyles}
-              defaultValue={establishmentSelected}
-            />
-
+            {!isLoading && (
+              <Select
+                onChange={handleSelectEstablishment}
+                options={establishmentOptions}
+                placeholder="Selecione o estabelecimento"
+                styles={selectCustomStyles}
+                defaultValue={establishmentSelected}
+              />
+            )}
             <ToggleScreenOrdersContainer>
               <InProgressButton
                 type="button"

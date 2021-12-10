@@ -1,4 +1,4 @@
-import React, { useCallback, useRef } from 'react';
+import React, { useCallback, useRef, useState } from 'react';
 import { FiArrowLeft, FiMail, FiUser, FiLock } from 'react-icons/fi';
 import { FormHandles } from '@unform/core';
 import { Form } from '@unform/web';
@@ -24,6 +24,7 @@ interface SignUpFormData {
 }
 
 export const SignUp: React.FC = () => {
+  const [isLoading, setIsLoading] = useState(false);
   const formRef = useRef<FormHandles>(null);
   const { addToast } = useToast();
   const history = useHistory();
@@ -55,8 +56,11 @@ export const SignUp: React.FC = () => {
 
         await schema.validate(data, { abortEarly: false });
 
+        setIsLoading(true);
+
         await api.post('/account', data);
 
+        setIsLoading(false);
         history.push('/');
 
         addToast({
@@ -71,6 +75,7 @@ export const SignUp: React.FC = () => {
           return;
         }
 
+        setIsLoading(false);
         addToast({
           type: 'error',
           title: 'Erro no cadastro',
@@ -110,7 +115,13 @@ export const SignUp: React.FC = () => {
               placeholder="Senha"
             />
 
-            <Button type="submit">Cadastrar</Button>
+            <Button
+              type="submit"
+              loading={isLoading}
+              text_loading="Criando conta..."
+            >
+              Cadastrar
+            </Button>
           </Form>
 
           <Link to="/">

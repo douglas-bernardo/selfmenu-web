@@ -40,8 +40,8 @@ export const AnimationContainer = styled.div`
   animation: ${appearFromLeft} 1s;
 
   img.logo {
-    width: 300px;
-    height: 300px;
+    width: 250px;
+    height: 250px;
   }
 
   form {

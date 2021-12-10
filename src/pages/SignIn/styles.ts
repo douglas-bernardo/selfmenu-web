@@ -40,8 +40,8 @@ export const AnimationContainer = styled.div`
   animation: ${appearFromLeft} 1s;
 
   img.logo {
-    width: 300px;
-    height: 300px;
+    width: 250px;
+    height: 250px;
   }
 
   h1 {
@@ -50,7 +50,7 @@ export const AnimationContainer = styled.div`
   }
 
   form {
-    margin: 50px 0;
+    margin: 10px 0;
     width: 340px;
     text-align: center;
 
@@ -61,7 +61,7 @@ export const AnimationContainer = styled.div`
     a {
       color: #ff365f;
       display: block;
-      margin-top: 24px;
+      margin-top: 10px;
       text-decoration: none;
       transition: color 0.2s;
 

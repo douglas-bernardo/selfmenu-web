@@ -64,7 +64,7 @@ export const SignIn: React.FC = () => {
         });
 
         setIsLoading(false);
-        history.push('/products');
+        history.push('/dashboard');
       } catch (err) {
         if (err instanceof Yup.ValidationError) {
           const errors = getValidationErrors(err);
@@ -100,11 +100,7 @@ export const SignIn: React.FC = () => {
               placeholder="Senha"
             />
 
-            <Button
-              type="submit"
-              loading={isLoading}
-              text_loading="Acessando..."
-            >
+            <Button type="submit" loading={isLoading} text_loading="Aguarde...">
               Entrar
             </Button>
 
