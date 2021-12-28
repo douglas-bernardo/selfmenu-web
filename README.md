@@ -1,17 +1,17 @@
 
 <h1 style="display: flex; align-items: center; justify-content: center;" class="logo">
-    <img width="100" style="margin-right: 20px;" src="https://ik.imagekit.io/rcjzrqiiqm7/logo_pgqcxO7B-.png?updatedAt=1629919326885">
+    <img width="100" style="margin-right: 20px;" src="https://ik.imagekit.io/rcjzrqiiqm7/selfmenu-logo_iEOmSYdmP.svg?updatedAt=1640657286894">
   Selfmenu WEB - Painel Admin
 </h1>
 
 &nbsp;
 
 <h1>
-    <img src="https://ik.imagekit.io/rcjzrqiiqm7/ezgif.com-gif-maker_NroxTLzN8.gif?updatedAt=1629919342411">
+    <img src="https://ik.imagekit.io/rcjzrqiiqm7/ezgif.com-gif-maker_s4tY7H8ARWc.gif?updatedAt=1640657064127">
 </h1>
 
 <h4 align="center">
-	🚧  Status 🚀 Em construção (prev. final do curso)  🚧
+	🚧  Status 🚀 Finalizado  🚧
 </h4>
 
 # Índice
