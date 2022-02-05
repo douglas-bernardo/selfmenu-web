@@ -11,6 +11,7 @@ import { api } from '../../services/api';
 import Tag from '../../components/Tag';
 import Loading from '../../components/Loading';
 import Pagination, { PaginationHandles } from '../../components/Pagination';
+import coverDefault from '../../assets/default.jpeg';
 
 import {
   Main,
@@ -110,11 +111,7 @@ export const Products: React.FC = () => {
                     <td>
                       <img
                         className="productImage"
-                        src={
-                          product.photo_url
-                            ? product.photo_url
-                            : 'images/default.jpeg'
-                        }
+                        src={product.photo_url || coverDefault}
                         alt="ProductImage"
                       />
                     </td>
