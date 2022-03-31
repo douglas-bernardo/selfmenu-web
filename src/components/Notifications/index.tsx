@@ -62,13 +62,13 @@ export const Notifications: React.FC = () => {
     loadNotifications();
   }, []);
 
-  useEffect(() => {
-    const timer = setInterval(() => {
-      loadNotifications();
-    }, 5000);
+  // useEffect(() => {
+  //   const timer = setInterval(() => {
+  //     loadNotifications();
+  //   }, 5000);
 
-    return () => clearInterval(timer);
-  }, []);
+  //   return () => clearInterval(timer);
+  // }, []);
 
   const handleToggleVisible = useCallback(() => {
     setVisible(!visible);
